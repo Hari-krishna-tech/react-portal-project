@@ -1,0 +1,119 @@
+.sidebar {
+  position: fixed;
+  left: -250px;
+  top: 0;
+  bottom: 0;
+  width: 250px;
+  background-color: #2c3e50;
+  transition: left 0.3s ease;
+  box-shadow: 2px 0 5px rgba(0, 0, 0, 0.1);
+  z-index: 1000;
+  overflow-y: auto;
+  display: flex;
+  flex-direction: column;
+}
+
+.sidebar.open {
+  left: 0;
+}
+
+.logo-container {
+  padding: 1rem;
+  text-align: center;
+  background-color: #34495e;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+  height: 60px; /* Match navbar height */
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.logo {
+  max-height: 40px;
+  width: auto;
+}
+
+.sidebar-menu {
+  list-style-type: none;
+  padding: 1rem 0;
+  margin: 0;
+  flex-grow: 1;
+}
+
+.menu-item {
+  padding: 0.25rem 1rem;
+}
+
+.menu-item.active > .dropdown > span {
+  background-color: rgba(255, 255, 255, 0.1);
+  color: #3498db;
+}
+
+.sidebar-menu a, .sidebar-menu .dropdown > span {
+  color: #ecf0f1;
+  text-decoration: none;
+  font-size: 0.9rem;
+  transition: all 0.3s ease;
+  display: block;
+  padding: 0.75rem 1rem;
+  border-radius: 4px;
+}
+
+.sidebar-menu a:hover, .sidebar-menu .dropdown > span:hover {
+  background-color: rgba(255, 255, 255, 0.1);
+  color: #3498db;
+}
+
+.dropdown {
+  position: relative;
+  cursor: pointer;
+}
+
+.dropdown > span {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.dropdown-icon {
+  transition: transform 0.3s ease;
+  font-size: 0.8rem;
+  margin-left: 0.5rem;
+}
+
+.dropdown.active .dropdown-icon {
+  transform: rotate(180deg);
+}
+
+.dropdown-menu {
+  max-height: 0;
+  overflow: hidden;
+  list-style-type: none;
+  padding-left: 1rem;
+  margin: 0;
+  transition: max-height 0.3s ease, padding 0.3s ease;
+  background-color: #2c3e50;
+
+}
+
+.dropdown.active .dropdown-menu {
+  max-height: 500px;
+  padding-top: 0.5rem;
+  padding-bottom: 0.5rem;
+}
+
+.dropdown-menu a {
+  font-size: 0.85rem;
+  padding: 0.5rem 1rem;
+}
+
+/* @media (max-width: 768px) {
+  .sidebar {
+    left: -100%;
+    width: auto;
+  }
+
+  .sidebar.open {
+    left: 0;
+  }
+} */
