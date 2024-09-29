@@ -2,11 +2,11 @@ import React, { useState } from 'react';
 import { BrowserRouter as Router, Route, Routes, Navigate } from 'react-router-dom';
 import { useSelector, useDispatch } from 'react-redux';
 import { login, logout, register } from './redux/authSlice';
-import Navbar from './components/Navbar';
-import Sidebar from './components/Sidebar';
-import Login from './components/Login';
-import Register from './components/Register';
-import Dashboard from './components/Dashboard';
+import Navbar from './components/navbar/Navbar';
+import Sidebar from './components/sidebar/Sidebar';
+import Login from './components/login/Login';
+import Register from './components/register/Register';
+import Dashboard from './components/dashboardLayout/Dashboard';
 import './App.css';
 
 const App = () => {

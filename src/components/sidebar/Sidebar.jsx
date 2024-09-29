@@ -1,8 +1,8 @@
 import React, { useState, useEffect } from 'react';
 import { Link, useLocation, useNavigate } from 'react-router-dom';
-import { navLinks } from '../utils/navLinks';
+import { navLinks } from '../../utils/navLinks';
 import './Sidebar.css';
-import logo from '../assets/minsprint_logo.svg';
+import logo from '../../assets/minsprint_logo.svg';
 
 const Sidebar = ({ isOpen }) => {
   const [activeDropdown, setActiveDropdown] = useState(null);
@@ -13,10 +13,14 @@ const Sidebar = ({ isOpen }) => {
   useEffect(() => {
     const currentPath = location.pathname;
     const activeNavItemIndex = navLinks.findIndex(item => 
-      item.route === currentPath || (item.subItems && item.subItems.some(subItem => subItem.route === currentPath))
+      item.route === currentPath || 
+      (item.subItems && item.subItems.some(subItem => currentPath.startsWith(subItem.route)))
     );
-    setActiveItem(activeNavItemIndex);
-    setActiveDropdown(activeNavItemIndex);
+    
+    if (activeNavItemIndex !== -1) {
+      setActiveItem(activeNavItemIndex);
+      setActiveDropdown(activeNavItemIndex);
+    }
   }, [location]);
 
   const toggleDropdown = (index) => {
@@ -67,7 +71,7 @@ const Sidebar = ({ isOpen }) => {
                       <Link 
                         to={subItem.route}
                         onClick={(e) => handleSubItemClick(e, subItem.route)}
-                        className={location.pathname === subItem.route ? 'active' : ''}
+                        className={location.pathname.startsWith(subItem.route) ? 'active' : ''}
                       >
                         {subItem.name}
                       </Link>

@@ -2,7 +2,7 @@ import React, { useState, useRef, useEffect } from 'react';
 import { Link } from 'react-router-dom';
 import { useSelector } from 'react-redux';
 import './Navbar.css';
-import logoImage from '../assets/minsprint_logo.svg'; // Adjust the path as needed
+import logoImage from '../../assets/minsprint_logo.svg'; // Adjust the path as needed
 
 const Navbar = ({ onLogout, onToggleSidebar }) => {
   const [dropdownOpen, setDropdownOpen] = useState(false);

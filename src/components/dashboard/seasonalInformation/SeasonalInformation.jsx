@@ -1,4 +1,5 @@
 import React from 'react'
+import "./SeasonalInformation.css";
 
 const SeasonalInformation = () => {
   return (

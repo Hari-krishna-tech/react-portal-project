@@ -1,4 +1,5 @@
 import React from 'react'
+import "./UserRecertification.css";
 
 const UserRecertification = () => {
     return (
