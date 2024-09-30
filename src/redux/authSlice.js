@@ -1,9 +1,9 @@
 import { createSlice } from '@reduxjs/toolkit';
 
 const initialState = {
-  isAuthenticated: true,
+  isAuthenticated: false,
   token: null,
-  user: "hari",
+  user: null,
 };
 
 const authSlice = createSlice({
@@ -12,20 +12,23 @@ const authSlice = createSlice({
   reducers: {
     login: (state, action) => {
       state.isAuthenticated = true;
-      state.token = action.payload;
+      state.token = action.payload.token;
       // You might want to decode the JWT here to get user info
+      
+      state.user = action.payload.user;
 
     },
     logout: (state) => {
+      localStorage.removeItem("token");
       state.isAuthenticated = false;
       state.token = null;
       state.user = null;
     },
     register: (state, action) => {
       state.isAuthenticated = true;
-      state.token = action.payload;
+      state.token = action.payload.token;
       // You might want to decode the JWT here to get user info
-
+      state.user = action.payload.user;
     },
   },
 });

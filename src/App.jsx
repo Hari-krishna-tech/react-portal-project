@@ -1,7 +1,11 @@
-import React, { useState } from 'react';
-import { BrowserRouter as Router, Route, Routes, Navigate } from 'react-router-dom';
+import React, { useState, useEffect } from 'react';
+import { BrowserRouter as Router, Route, Routes, Navigate, useNavigate } from 'react-router-dom';
 import { useSelector, useDispatch } from 'react-redux';
 import { login, logout, register } from './redux/authSlice';
+
+import axios from 'axios'; 
+import {jwtDecode} from 'jwt-decode';
+
 import Navbar from './components/navbar/Navbar';
 import Sidebar from './components/sidebar/Sidebar';
 import Login from './components/login/Login';
@@ -9,10 +13,12 @@ import Register from './components/register/Register';
 import Dashboard from './components/dashboardLayout/Dashboard';
 import './App.css';
 
+
 const App = () => {
   const [sidebarOpen, setSidebarOpen] = useState(false);
   const isAuthenticated = useSelector(state => state.auth.isAuthenticated);
   const dispatch = useDispatch();
+  const navigate = useNavigate();
 
   const toggleSidebar = () => {
     setSidebarOpen(!sidebarOpen);
@@ -20,13 +26,12 @@ const App = () => {
 
   const handleLogin = async (credentials) => {
     try {
-      const response = await fetch('http://your-backend-url/login', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify(credentials),
-      });
-      const data = await response.json();
-      dispatch(login(data.token));
+      const response = await axios.post("http://localhost:8080/api/auth/login", credentials);
+      const data = response.data;
+      localStorage.setItem("token", data.token);
+      axios.defaults.headers.common['Authorization'] = `Bearer ${data.token}`;
+      dispatch(login({token:data.token,user:data.username}));
+      
     } catch (error) {
       console.error('Login failed:', error);
       throw new Error('Login failed:', error);
@@ -34,15 +39,14 @@ const App = () => {
     }
   };
 
+
   const handleRegister = async (userData) => {
     try {
-      const response = await fetch('http://your-backend-url/register', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify(userData),
-      });
-      const data = await response.json();
-      dispatch(register(data.token));
+      const response = await axios.post("http://localhost:8080/api/auth/register", credentials);
+      const data = response.data;
+      localStorage.setItem("token", data.token);
+      axios.defaults.headers.common['Authorization'] = `Bearer ${data.token}`;
+      dispatch(register({token:data.token,user:data.username}));
     } catch (error) {
       console.error('Registration failed:', error);
       throw new Error('Registration failed:', error);
@@ -54,8 +58,46 @@ const App = () => {
     dispatch(logout());
   };
 
+  function getUsernameFromToken(token) {
+    // Retrieve the token from localStorage
+    
+    
+    if (token) {
+      try {
+        // Decode the token
+        const decodedToken = jwtDecode(token);
+        
+        // Extract the username
+        // Note: The exact key might be different based on how you structured your JWT payload
+        const username = decodedToken.sub || decodedToken.username;
+        
+        return username;
+      } catch (error) {
+        console.error('Error decoding token:', error);
+        return null;
+      }
+    } else {
+      console.log('No token found in localStorage');
+      return null;
+    }
+  }
+
+  useEffect(() => {
+    // check whether token is stored in the local storage
+    const token = localStorage.getItem("token");
+    if (token) {
+      axios.defaults.headers.common['Authorization'] = `Bearer ${token}`;
+      
+      const username = getUsernameFromToken(token);
+      dispatch(login({token, user: username})); // Replace "username" with actual username
+      navigate("/")
+    } else {
+      dispatch(logout());
+    }
+  }, [])
+
   return (
-    <Router>
+    <>
       <div className={`app ${sidebarOpen ? 'sidebar-open' : ''}`}>
         {isAuthenticated && (
           <>
@@ -81,7 +123,7 @@ const App = () => {
           </div>
         )}
       </div>
-    </Router>
+    </>
   );
 };
 

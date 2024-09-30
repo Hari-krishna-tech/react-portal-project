@@ -1,20 +1,23 @@
 import React, { useState } from 'react';
 import { Link } from 'react-router-dom';
 import './Login.css';
+// import axios from 'axios';
+import { useNavigate } from 'react-router-dom';
 
 const Login = ({ onLogin }) => {
   const [username, setUsername] = useState('');
   const [password, setPassword] = useState('');
   const [errors, setErrors] = useState({});
   const [authError, setAuthError] = useState('');
+  const navigate = useNavigate();
 
   const validateForm = () => {
     const newErrors = {};
-    if (username.length < 3) {
-      newErrors.username = 'Username must be at least 3 characters long';
+    if (username.length < 1) {
+      newErrors.username = 'Username must be at least 1 characters long';
     }
-    if (password.length < 5) {
-      newErrors.password = 'Password must be at least 5 characters long';
+    if (password.length < 1) {
+      newErrors.password = 'Password must be at least 1 characters long';
     }
     setErrors(newErrors);
     return Object.keys(newErrors).length === 0;
@@ -25,7 +28,16 @@ const Login = ({ onLogin }) => {
     setAuthError('');
     if (validateForm()) {
       try {
-        await onLogin({ username, password });
+        //const response = await axios.post('http://localhost:8080/api/auth/login', { username, password });
+
+        // save the token in local storage
+       // localStorage.setItem('token', response.data.token);
+
+        await onLogin({username, password});
+        // redirect to dashboard
+        navigate('/dashboard');
+        
+
       } catch (error) {
         setAuthError('Invalid credentials. Please try again.');
       }
