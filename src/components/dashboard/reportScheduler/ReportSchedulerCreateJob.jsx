@@ -1,5 +1,5 @@
-import React, { useState } from 'react';
-import { useNavigate } from 'react-router-dom';
+import React, { useState, useRef } from 'react';
+import { useNavigate, Link } from 'react-router-dom';
 import axios from 'axios';
 import cronstrue from 'cronstrue';
 import Cron from 'cron-validate'
@@ -14,6 +14,8 @@ const jobSchema = zod.object({
   databaseUsername: zod.string().min(1).max(50),
   databasePassword: zod.string().min(1).max(50),
   keyUserEmail: zod.array(zod.string().email()),
+  // it can be empty [""]
+  cc:  zod.array(zod.string().email()).optional(),
   emailBody: zod.string().min(1).max(1000),
   emailSubject: zod.string().min(1).max(100),
   cronFrequency: zod.string().min(1),
@@ -30,6 +32,7 @@ const CreateJob = () => {
     databaseUsername: "", 
     databasePassword: "",
     keyUserEmail: [""],
+    cc: [""],
     emailBody: "",
     emailSubject: "",
     cronFrequency: "",
@@ -39,6 +42,8 @@ const CreateJob = () => {
 
   const [cronFrequency, setCronFrequency] = useState('0 * * * *');
   const [selectDatabase, setSelectDatabase] = useState("jdbc:mysql://")
+
+  const linkRef = useRef(null);
 
   const [showModal, setShowModal] = useState(false);
   const navigate = useNavigate();
@@ -113,13 +118,15 @@ const CreateJob = () => {
         databaseUsername: "", 
         databasePassword: "",
         keyUserEmail: [""],
+        cc:[""],
         emailBody: "",
         emailSubject: "",
         cronFrequency: "* * * * *",
         startDateTime: new Date().toISOString().slice(0,16),
         endDateTime: new Date().toISOString().slice(0, 16),
       });
-      navigate("/");
+      // navigate("/reportscheduler/jobs");
+      linkRef.current.click();
     }).catch(error => {
       console.log(error);
       // todo for future show modal about error from the backend
@@ -190,6 +197,20 @@ const CreateJob = () => {
             ))}
           </div>
           <div className="form-group">
+            <label><i className="fas fa-envelope"></i> CC Emails</label>
+            {formData.cc.map((email, index) => (
+              <div key={index} className="array-input">
+                <input value={email} name='cc' type="email" onChange={(e) => handleArrayChange(e, index, 'cc')} />
+                <button type="button" className="icon-button add" onClick={() => addArrayField('cc')}>
+                  <i className="fas fa-plus"></i>
+                </button>
+                <button type="button" className="icon-button remove" onClick={() => deleteArrayField('cc', index)}>
+                  <i className="fas fa-minus"></i>
+                </button>
+              </div>
+            ))}
+          </div>
+          <div className="form-group">
             <label><i className="fas fa-heading"></i> Email Subject</label>
             <input value={formData.emailSubject} name='emailSubject' type="text" onChange={handleChange}/>
           </div>
@@ -225,6 +246,7 @@ const CreateJob = () => {
     {showModal && (
     <EnterCorrectDetailsModal onClose={closeModal} />
     )}
+    <Link to="/reportscheduler/jobs" ref={linkRef} style={{display:'none'}} />
         
     </>
   );
