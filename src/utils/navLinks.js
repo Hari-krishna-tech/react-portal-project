@@ -10,6 +10,11 @@ export const navLinks = [
     {
       name: 'Seasonal Information',
       route: '/seasonalinfo',
+      subItems: [
+        { name: 'List Seasonal Information', route: '/seasonalinfo/list' },
+        { name: 'Seasonal Information Logs', route: '/seasonalinfo/logs' }
+        
+      ],
     },
     {
       name: 'User Recertification',

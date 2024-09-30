@@ -1,0 +1,82 @@
+.seasonal-information {
+    min-height: calc(100vh - 60px);
+    background-color: #f0f2f5;
+    padding: 2rem;
+}
+
+.seasonal-information .container {
+    max-width: 1200px;
+    margin: 0 auto;
+}
+
+.seasonal-information .table-container {
+    background-color: #ffffff;
+    border-radius: 12px;
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
+    overflow: hidden;
+    transition: box-shadow 0.3s ease, transform 0.3s ease;
+}
+/* 
+.seasonal-information .table-container:hover {
+    box-shadow: 0 6px 25px rgba(0, 0, 0, 0.15);
+    transform: translateY(-5px);
+} */
+
+.seasonal-information table {
+    width: 100%;
+    border-collapse: separate;
+    border-spacing: 0;
+}
+
+.seasonal-information th,
+.seasonal-information td {
+    padding: 1.25rem 1rem;
+    text-align: left;
+    border-bottom: 1px solid #e0e0e0;
+}
+
+.seasonal-information th {
+    background-color: #f5f5f5;
+    font-weight: 600;
+    color: #333;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+    font-size: 0.9rem;
+}
+
+.seasonal-information tr:last-child td {
+    border-bottom: none;
+}
+
+.seasonal-information tbody tr {
+    transition: background-color 0.3s ease;
+}
+
+.seasonal-information tbody tr:hover {
+    background-color: #f0f7ff;
+    cursor: pointer;
+}
+
+@media (max-width: 768px) {
+    .seasonal-information {
+        padding: 1rem;
+    }
+
+    .seasonal-information th,
+    .seasonal-information td {
+        padding: 1rem 0.75rem;
+    }
+}
+
+.seasonal-information .page-title {
+    font-size: 1.5rem;
+    color: #333;
+    margin-bottom: 1.5rem;
+    font-weight: 700;
+    text-align: center;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    padding-bottom: 0.5rem;
+    /* border-bottom: 3px solid #1877f2; */
+    display: inline-block;
+}

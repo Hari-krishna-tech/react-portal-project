@@ -14,7 +14,11 @@ export const menuItems = [
   {
     name: 'Seasonal Information',
     route: '/seasonalinfo',
-    component: lazy(() => import('../components/dashboard/seasonalInformation/SeasonalInformation')),
+    component: lazy(() => import('../components/dashboard/seasonalInformation/SeasonalInformationLayout')),
+    subItems: [
+      { name: 'List Seasonal Information', route: '/seasonalinfo/list' },
+      { name: 'Seasonal Information Logs', route: '/seasonalinfo/logs' }
+    ],
   },
   {
     name: 'User Recertification',

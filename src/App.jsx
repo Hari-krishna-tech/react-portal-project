@@ -92,7 +92,7 @@ const App = () => {
       dispatch(login({token, user: username})); // Replace "username" with actual username
       navigate("/")
     } else {
-      dispatch(logout());
+      //dispatch(logout());
     }
   }, [])
 
