@@ -67,17 +67,28 @@ const fakeSeasonalLogs = [
 ];
 
 const SeasonalInformationLogs = () => {
-  const [seasonalLogs, setSeasonalLogs] = useState(fakeSeasonalLogs);
+  const [seasonalLogs, setSeasonalLogs] = useState([]);
   const [selectedLog, setSelectedLog] = useState(null);
 
   const fetchSeasonalLogs = useCallback(async () => {
     try {
-      const response = await axios.get("http://localhost:8080/api/seasonal-logs");
+      const response = await axios.get("http://localhost:9081/seasonal-info/logs");
+      
       setSeasonalLogs(response.data);
     } catch (error) {
       console.log("Failed to fetch seasonal logs:", error);
     }
   }, []);
+
+  const returnList = (arr) => {
+    const result = [];
+    for (let i = 0; i < arr.length; i++) {
+      result.push(arr[i].emailId);
+    }
+    return result.join(", ");
+  }
+
+  // date and time should be shown 
 
   const formattedDate = (isoString) => format(parseISO(isoString), 'PP')
 
@@ -102,10 +113,10 @@ const SeasonalInformationLogs = () => {
             <tbody>
               {seasonalLogs.map((log) => (
                 <tr key={log.id} onClick={() => setSelectedLog(log)}>
-                  <td>{log.origin}</td>
-                  <td>{log.commodity}</td>
-                  <td>{formattedDate(log.email_send_date)}</td>
-                  <td>{log.email_send_status}</td>
+                  <td>{log.seasonalInfo.origin?.origin}</td>
+                  <td>{log.seasonalInfo.origin?.commodity}</td>
+                  <td>{formattedDate(log.emailSendDateTime)}</td>
+                  <td style={{color: `${log.emailSendStatus?"green": "red"}`}}>{log.emailSendStatus?"Success": "Failed"}</td>
                 </tr>
               ))}
             </tbody>
@@ -119,21 +130,21 @@ const SeasonalInformationLogs = () => {
               <button className="close-btn" onClick={() => setSelectedLog(null)}>&times;</button>
               <div className="log-details">
                 <div className="log-info">
-                  <p><strong>Origin:</strong> <span>{selectedLog.origin}</span></p>
-                  <p><strong>Commodity:</strong> <span>{selectedLog.commodity}</span></p>
-                  <p><strong>Operating Group:</strong> <span>{selectedLog.operating_group}</span></p>
-                  <p><strong>Season From:</strong> <span>{selectedLog.season_from}</span></p>
-                  <p><strong>Season To:</strong> <span>{selectedLog.season_to}</span></p>
-                  <p><strong>Email Send Date:</strong> <span>{formattedDate(selectedLog.email_send_date)}</span></p>
-                  <p><strong>Email Send Time:</strong> <span>{selectedLog.email_send_time}</span></p>
-                  <p><strong>Email Send Status:</strong> <span>{selectedLog.email_send_status}</span></p>
-                  <p><strong>Email Subject:</strong> <span>{selectedLog.email_subject}</span></p>
-                  <p><strong>Email To:</strong> <span>{selectedLog.email_to}</span></p>
-                  <p><strong>Email CC:</strong> <span>{selectedLog.email_cc}</span></p>
+                  <p><strong>Origin:</strong> <span>{selectedLog.seasonalInfo.origin.origin}</span></p>
+                  <p><strong>Commodity:</strong> <span>{selectedLog.seasonalInfo.origin.commodity}</span></p>
+                  <p><strong>Operating Group:</strong> <span>{selectedLog.seasonalInfo.entity.name}</span></p>
+                  <p><strong>Season From:</strong> <span>{selectedLog.seasonalInfo.seasonFrom}</span></p>
+                  <p><strong>Season To:</strong> <span>{selectedLog.seasonalInfo.seasonTo}</span></p>
+                  <p><strong>Email Send Date:</strong> <span>{formattedDate(selectedLog.emailSendDateTime)}</span></p>
+                  
+                  <p><strong>Email Send Status:</strong> <span style={{color: `${selectedLog.emailSendStatus?"green": "red"}`}}>{selectedLog.emailSendStatus?"Success": "Failed"}</span></p>
+                  <p><strong>Email Subject:</strong> <span>{selectedLog.emailSubject}</span></p>
+                  <p><strong>Email To:</strong> <span>{returnList(selectedLog.seasonalInfo.recipientsTo)}</span></p>
+                  <p><strong>Email CC:</strong> <span>{returnList(selectedLog.seasonalInfo.recipientsCc)}</span></p>
                 </div>
                 <div className="email-body">
                   <h4>Email Body</h4>
-                  <div className="email-content">{selectedLog.email_body}</div>
+                  <div className="email-content">{selectedLog.emailBody}</div>
                 </div>
               </div>
               <div className="modal-actions">

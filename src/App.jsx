@@ -40,7 +40,7 @@ const App = () => {
   };
 
 
-  const handleRegister = async (userData) => {
+  const handleRegister = async (credentials) => {
     try {
       const response = await axios.post("http://localhost:8080/api/auth/register", credentials);
       const data = response.data;
@@ -55,6 +55,13 @@ const App = () => {
   };
 
   const handleLogout = () => {
+    // clear axios defaults 
+    axios.defaults.headers.common['Authorization'] = '';
+    
+    // Clear the token from localStorage
+    localStorage.removeItem("token");
+    
+    // Dispatch logout action to the Redux store
     dispatch(logout());
   };
 

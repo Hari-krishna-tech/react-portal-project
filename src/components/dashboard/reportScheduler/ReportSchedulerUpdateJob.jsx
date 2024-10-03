@@ -1,5 +1,6 @@
 import React, { useState, useEffect, useRef } from 'react';
 import { useNavigate, Link } from 'react-router-dom';
+import { useSelector } from 'react-redux';
 import axios from 'axios';
 import cronstrue from 'cronstrue';
 import Cron from 'cron-validate'
@@ -19,10 +20,17 @@ const jobSchema = zod.object({
   emailSubject: zod.string().min(1).max(100),
   cronFrequency: zod.string().min(1),
   startDateTime: zod.string(),
-  endDateTime: zod.string()
+  endDateTime: zod.string(),
+  createdBy : zod.string(),
+  createdAt: zod.string(),
+  updatedBy : zod.string().optional(),
+  updatedAt: zod.string().optional(),
+ 
 });
 
 const UpdateJob = ({jobId}) => {
+
+  const user = useSelector(state => state.auth.user);
   const [formData, setFormData] = useState({
     jobName: "",
     sqlQuery: [""],
@@ -37,6 +45,10 @@ const UpdateJob = ({jobId}) => {
     cronFrequency: "",
     startDateTime: new Date().toLocaleString("sv-SE", {year: 'numeric', month: '2-digit', day: '2-digit', hour: '2-digit', minute: '2-digit'}).replace(" ", "T"),
     endDateTime: new Date().toLocaleString("sv-SE", {year: 'numeric', month: '2-digit', day: '2-digit', hour: '2-digit', minute: '2-digit'}).replace(" ", "T"),
+    createdBy : "",
+    createdAt : null,
+    updatedBy : user,
+    updatedAt: new Date().toISOString(),
   });
 
   const [cronFrequency, setCronFrequency] = useState('0 * * * *');
@@ -91,7 +103,9 @@ const UpdateJob = ({jobId}) => {
       cronFrequency,
       databaseUrl: selectDatabase + formData.databaseUrl + "/" + formData.databaseName,
       startDateTime: new Date(formData.startDateTime).toISOString(),
-      endDateTime: new Date(formData.endDateTime).toISOString()
+      endDateTime: new Date(formData.endDateTime).toISOString(),
+      updatedAt: new Date(formData.updatedAt).toISOString(),
+      updatedBy: user,
     }
     
    // console.log(zod.isValid(finalForm));
@@ -105,7 +119,7 @@ const UpdateJob = ({jobId}) => {
     
     
     console.log(result.data);
-    axios.put(`http://localhost:8080/api/jobs/${jobId}`, result.data).then(res => {
+    axios.put(`http://localhost:10000/api/jobs/${jobId}`, result.data).then(res => {
       console.log(res.data);
 
       setFormData({
@@ -132,7 +146,7 @@ const UpdateJob = ({jobId}) => {
 
   useEffect(() => {
     try {
-      axios.get(`http://localhost:8080/api/jobs/${jobId}`).then(res => {
+      axios.get(`http://localhost:10000/api/jobs/${jobId}`).then(res => {
         setFormData(preData => {
           setCronFrequency(res.data.cronFrequency);
           

@@ -32,4 +32,11 @@ export const navLinks = [
         { name: 'List', route: '/outage/list' },
       ],
     },
+    {
+      name: 'Settings',
+      route: '/settings',
+      subItems: [
+        { name: 'Database Settings', route: '/settings/database-settings' },
+      ],
+    },
   ];

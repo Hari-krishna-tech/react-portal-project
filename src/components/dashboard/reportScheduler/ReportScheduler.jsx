@@ -36,7 +36,7 @@ const ReportScheduler = () => {
 
     const fetchJobs = useCallback(async () => {
         try {
-            const response = await axios.get("http://localhost:8080/api/jobs");
+            const response = await axios.get("http://localhost:10000/api/jobs");
             setJobs(response.data);
         } catch (error) {
             console.error("Failed to fetch jobs:", error);

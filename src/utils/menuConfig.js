@@ -37,5 +37,14 @@ export const menuItems = [
       { name: 'Create', route: '/outage/create' },
       { name: 'List', route: '/outage/list' },
     ],
+  }, 
+  {
+    name: 'Settings',
+    route: '/settings',
+    component: lazy(() => import('../components/dashboard/settings/SettingLayout')),
+    subItems: [
+      { name: 'Database Settings', route: '/settings/database-settings' },
+      
+    ],
   },
 ];

@@ -1,5 +1,6 @@
 import React, { useState, useRef } from 'react';
 import { useNavigate, Link } from 'react-router-dom';
+import { useSelector } from 'react-redux';
 import axios from 'axios';
 import cronstrue from 'cronstrue';
 import Cron from 'cron-validate'
@@ -20,10 +21,16 @@ const jobSchema = zod.object({
   emailSubject: zod.string().min(1).max(100),
   cronFrequency: zod.string().min(1),
   startDateTime: zod.string(),
-  endDateTime: zod.string()
+  endDateTime: zod.string(),
+  createdBy : zod.string(),
+  createdAt: zod.string(),
+  updatedBy : zod.string().optional(),
+  updatedAt: zod.string().optional(),
+ 
 });
 
 const CreateJob = () => {
+  const user = useSelector(state => state.auth.user);
   const [formData, setFormData] = useState({
     jobName: "",
     sqlQuery: [""],
@@ -38,6 +45,11 @@ const CreateJob = () => {
     cronFrequency: "",
     startDateTime: new Date().toLocaleString("sv-SE", {year: 'numeric', month: '2-digit', day: '2-digit', hour: '2-digit', minute: '2-digit'}).replace(" ", "T"),
     endDateTime: new Date().toLocaleString("sv-SE", {year: 'numeric', month: '2-digit', day: '2-digit', hour: '2-digit', minute: '2-digit'}).replace(" ", "T"),
+    createdBy : user,
+    createdAt : new Date().toISOString(),
+    updatedBy : "",
+    updatedAt: "",
+    
   });
 
   const [cronFrequency, setCronFrequency] = useState('0 * * * *');
@@ -107,7 +119,7 @@ const CreateJob = () => {
     
     
     console.log(result.data);
-    axios.post(`http://localhost:8080/api/jobs`, result.data).then(res => {
+    axios.post(`http://localhost:10000/api/jobs`, result.data).then(res => {
       console.log(res.data);
 
       setFormData({

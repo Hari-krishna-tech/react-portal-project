@@ -80,17 +80,18 @@ const fakeSeasonalInfo = [
 ];
 
 const SeasonalInformation = () => {
-  const [seasonalInfo, setSeasonalInfo] = useState(fakeSeasonalInfo);
+  const [seasonalInfo, setSeasonalInfo] = useState([]);
   // const [activeTab, setActiveTab] = useState('info');
 
   const fetchSeasonalInfo = useCallback(async () => {
     try {
-      const response = await axios.get("http://localhost:8080/api/seasonal-info");
+      const response = await axios.get("http://localhost:9081/seasonal-info/list");
       setSeasonalInfo(response.data);
     } catch (error) {
       console.log("Failed to fetch seasonal information:", error);
     }
   }, []);
+
 
 
 
@@ -112,6 +113,7 @@ const SeasonalInformation = () => {
                 <th>Origin</th>
                 <th>Commodity</th>
                 <th>Operating Group</th>
+                <th>Region</th>
                 <th>Season From</th>
                 <th>Season To</th>
                 <th>Reminder Date</th>
@@ -120,12 +122,13 @@ const SeasonalInformation = () => {
             <tbody>
               {seasonalInfo.map((info) => (
                 <tr key={info.id}>
-                  <td>{info.origin}</td>
-                  <td>{info.commodity}</td>
-                  <td>{info.operating_group}</td>
-                  <td>{info.season_from}</td>
-                  <td>{info.season_to}</td>
-                  <td>{formattedDate(info.reminder_date)}</td>
+                  <td>{info.origin.origin}</td>
+                  <td>{info.origin.commodity}</td>
+                  <td>{info.entity.name}</td>
+                  <td>{info.region}</td>
+                  <td>{info.seasonFrom}</td>
+                  <td>{info.seasonTo}</td>
+                  <td>{formattedDate(info.reminderDate)}</td>
                 </tr>
               ))}
             </tbody>
