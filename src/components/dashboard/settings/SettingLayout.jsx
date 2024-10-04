@@ -9,7 +9,10 @@ const SettingLayout = () => {
 
   if (location.pathname === '/settings/database-settings') {
     return <DatabaseSetting />;
-  } else {
+  } else if(location.pathname === '/settings/database-settings/list') {
+    return <DatabaseSettingList />;
+  }
+  else {
     return <DatabaseSetting />; // Default view
   }
 }

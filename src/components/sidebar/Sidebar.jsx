@@ -48,11 +48,11 @@ const Sidebar = ({ isOpen }) => {
 
   return (
     <div className={`sidebar ${isOpen ? 'open' : ''}`}>
-      <div className="logo-container">
+      {/* <div className="logo-container">
         <Link to="/">
         <img src={logo} alt="MindSprint Logo" className="logo" />
         </Link>
-      </div>
+      </div> */}
       <nav className="sidebar-menu">
         {navLinks.map((item, index) => (
           <div key={item.name} className={`menu-item ${activeItem === index ? 'active' : ''}`}>

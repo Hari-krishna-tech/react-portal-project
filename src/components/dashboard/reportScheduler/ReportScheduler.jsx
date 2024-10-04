@@ -77,6 +77,7 @@ const ReportScheduler = () => {
     return (
         <div className="report-scheduler">
             <div className="container">
+            <h1 className="page-title">Job List</h1>
                 <div className="table-container">
                     <table>
                         <thead>

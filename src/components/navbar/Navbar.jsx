@@ -4,7 +4,7 @@ import { useSelector } from 'react-redux';
 import './Navbar.css';
 import logoImage from '../../assets/minsprint_logo.svg'; // Adjust the path as needed
 
-const Navbar = ({ onLogout, onToggleSidebar }) => {
+const Navbar = ({ isSideBarOpen,onLogout, onToggleSidebar }) => {
   const [dropdownOpen, setDropdownOpen] = useState(false);
   const username = useSelector(state => state.auth.user); // Get username from Redux
   const dropdownRef = useRef(null);
@@ -38,7 +38,9 @@ const Navbar = ({ onLogout, onToggleSidebar }) => {
     <nav className="navbar">
       <div className="navbar-left">
         <button className="sidebar-toggle" onClick={onToggleSidebar}>
-          <i className="fas fa-bars"></i>
+        <i 
+      className={`fas ${isSideBarOpen ? 'fa-xmark' : 'fa-bars'} menu-icon ${isSideBarOpen ? 'open' : ''}`}
+    ></i>
         </button>
         <Link to="/dashboard" className="navbar-logo">
           <img src={logoImage} alt="Logo" className="logo" />

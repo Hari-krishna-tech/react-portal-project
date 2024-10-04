@@ -1,7 +1,7 @@
 .seasonal-information {
     min-height: calc(100vh - 60px);
     background-color: #f0f2f5;
-    padding: 2rem;
+    padding: 1rem;
 }
 
 .seasonal-information .container {
@@ -30,9 +30,10 @@
 
 .seasonal-information th,
 .seasonal-information td {
-    padding: 1.25rem 1rem;
+    padding: 1rem 0.75rem;
     text-align: left;
     border-bottom: 1px solid #e0e0e0;
+    font-size: small;
 }
 
 .seasonal-information th {
@@ -41,7 +42,7 @@
     color: #333;
     text-transform: uppercase;
     letter-spacing: 0.5px;
-    font-size: 0.9rem;
+    font-size: small;
 }
 
 .seasonal-information tr:last-child td {
@@ -69,9 +70,9 @@
 }
 
 .seasonal-information .page-title {
-    font-size: 1.5rem;
+    font-size: 1.2rem;
     color: #333;
-    margin-bottom: 1.5rem;
+    margin-bottom: 1rem;
     font-weight: 700;
     text-align: center;
     text-transform: uppercase;

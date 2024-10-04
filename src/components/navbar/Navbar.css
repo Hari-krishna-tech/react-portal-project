@@ -129,3 +129,27 @@
 .dropdown-item-navbar:hover {
   background-color: #f5f5f5;
 }
+
+
+
+.navbar .menu-icon {
+  font-size: 24px;
+  transition: transform 0.3s ease;
+}
+
+.navbar .menu-icon.open {
+  transform: rotate(180deg);
+}
+
+/* Optional: Add scale effect */
+.navbar .menu-icon {
+  transition: transform 0.3s ease, scale 0.2s ease;
+}
+
+.navbar .menu-icon:hover {
+  scale: 1.1;
+}
+
+.navbar .menu-icon.open {
+  transform: rotate(180deg);
+}

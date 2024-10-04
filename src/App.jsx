@@ -105,19 +105,23 @@ const App = () => {
 
   return (
     <>
-      <div className={`app ${sidebarOpen ? 'sidebar-open' : ''}`}>
+      
         {isAuthenticated && (
           <>
-            <Sidebar isOpen={sidebarOpen} />
-            <div className="main-content">
-              <Navbar onLogout={handleLogout} onToggleSidebar={toggleSidebar} />
-              <main className="content">
-                <Routes>
-                  <Route path="*" element={<Dashboard />} />
-                  {/* Add other authenticated routes here */}
-                </Routes>
-              </main>
-            </div>
+            <div className={`app ${sidebarOpen ? 'sidebar-open' : ''}`}>
+      <div className="main-content">
+        <Navbar isSideBarOpen={sidebarOpen} onToggleSidebar={toggleSidebar} onLogout={handleLogout} />
+        <div className="content-wrapper">
+          <Sidebar isOpen={sidebarOpen} />
+          <main className="content">
+            <Routes>
+              <Route path="*" element={<Dashboard />} />
+              {/* Add other authenticated routes here */}
+            </Routes>
+          </main>
+        </div>
+      </div>
+    </div>
           </>
         )}
         {!isAuthenticated && (
@@ -129,7 +133,7 @@ const App = () => {
             </Routes>
           </div>
         )}
-      </div>
+      
     </>
   );
 };

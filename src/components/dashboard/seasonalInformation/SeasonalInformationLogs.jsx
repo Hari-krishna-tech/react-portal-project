@@ -90,7 +90,7 @@ const SeasonalInformationLogs = () => {
 
   // date and time should be shown 
 
-  const formattedDate = (isoString) => format(parseISO(isoString), 'PP')
+  const formattedDate = (isoString) => format(parseISO(isoString), 'PPpp')
 
   useEffect(() => {
     fetchSeasonalLogs();
@@ -106,7 +106,9 @@ const SeasonalInformationLogs = () => {
               <tr>
                 <th>Origin</th>
                 <th>Commodity</th>
-                <th>Email Send Date</th>
+                <th>Operating Group</th>
+                <th>Email Send DateTime</th>
+                <th>Season Start's</th>
                 <th>Status</th>
               </tr>
             </thead>
@@ -115,8 +117,14 @@ const SeasonalInformationLogs = () => {
                 <tr key={log.id} onClick={() => setSelectedLog(log)}>
                   <td>{log.seasonalInfo.origin?.origin}</td>
                   <td>{log.seasonalInfo.origin?.commodity}</td>
+                  <td>
+                    {log.seasonalInfo.entity.name}
+                  </td>
+                  <td>
+                    {log.seasonalInfo.seasonFrom}
+                  </td>
                   <td>{formattedDate(log.emailSendDateTime)}</td>
-                  <td style={{color: `${log.emailSendStatus?"green": "red"}`}}>{log.emailSendStatus?"Success": "Failed"}</td>
+                  <td style={{color: `${log.emailSendStatus?"green": "red"}`, textDecoration: "underline"}}>{log.emailSendStatus?"Success": "Failed"}</td>
                 </tr>
               ))}
             </tbody>
@@ -130,15 +138,13 @@ const SeasonalInformationLogs = () => {
               <button className="close-btn" onClick={() => setSelectedLog(null)}>&times;</button>
               <div className="log-details">
                 <div className="log-info">
-                  <p><strong>Origin:</strong> <span>{selectedLog.seasonalInfo.origin.origin}</span></p>
-                  <p><strong>Commodity:</strong> <span>{selectedLog.seasonalInfo.origin.commodity}</span></p>
-                  <p><strong>Operating Group:</strong> <span>{selectedLog.seasonalInfo.entity.name}</span></p>
-                  <p><strong>Season From:</strong> <span>{selectedLog.seasonalInfo.seasonFrom}</span></p>
-                  <p><strong>Season To:</strong> <span>{selectedLog.seasonalInfo.seasonTo}</span></p>
-                  <p><strong>Email Send Date:</strong> <span>{formattedDate(selectedLog.emailSendDateTime)}</span></p>
                   
-                  <p><strong>Email Send Status:</strong> <span style={{color: `${selectedLog.emailSendStatus?"green": "red"}`}}>{selectedLog.emailSendStatus?"Success": "Failed"}</span></p>
-                  <p><strong>Email Subject:</strong> <span>{selectedLog.emailSubject}</span></p>
+                  
+                  
+                  <p><strong>Email Send Date Time:</strong> <span>{formattedDate(selectedLog.emailSendDateTime)}</span></p>
+                  
+                  
+                  
                   <p><strong>Email To:</strong> <span>{returnList(selectedLog.seasonalInfo.recipientsTo)}</span></p>
                   <p><strong>Email CC:</strong> <span>{returnList(selectedLog.seasonalInfo.recipientsCc)}</span></p>
                 </div>
