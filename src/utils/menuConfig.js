@@ -44,6 +44,8 @@ export const menuItems = [
     component: lazy(() => import('../components/dashboard/settings/SettingLayout')),
     subItems: [
       { name: 'Database Settings', route: '/settings/database-settings' },
+      { name: 'Database Settings List', route: '/settings/database-settings/list' },
+      { name: 'Update Database Settings', route: '/settings/update-database-settings/:id' },
       
     ],
   },
