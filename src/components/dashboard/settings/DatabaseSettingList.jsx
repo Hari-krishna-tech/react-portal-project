@@ -3,44 +3,15 @@ import { Link } from 'react-router-dom';
 import axios from 'axios';
 import "./DatabaseSettingList.css";
 
-const fakeDatabaseSettings = [
-  {
-    id: 1,
-    databaseSettingName: "Production DB",
-    databaseUrl: "jdbc:mysql://prod-server:3306/prod_db",
-    databaseName: "prod_db",
-    databaseUsername: "prod_user",
-    createdAt: "2024-01-01T00:00:00",
-    updatedAt: "2024-01-02T00:00:00"
-  },
-  {
-    id: 2,
-    databaseSettingName: "Development DB",
-    databaseUrl: "jdbc:postgresql://dev-server:5432/dev_db",
-    databaseName: "dev_db",
-    databaseUsername: "dev_user",
-    createdAt: "2024-01-03T00:00:00",
-    updatedAt: null
-  },
-  {
-    id: 3,
-    databaseSettingName: "Test DB",
-    databaseUrl: "jdbc:sqlserver://test-server:1433/test_db",
-    databaseName: "test_db",
-    databaseUsername: "test_user",
-    createdAt: "2024-01-04T00:00:00",
-    updatedAt: "2024-01-05T00:00:00"
-  }
-];
-
 const DatabaseSettingList = () => {
-    const [databaseSettings, setDatabaseSettings] = useState(fakeDatabaseSettings);
+    const [databaseSettings, setDatabaseSettings] = useState([]);
     const [showModal, setShowModal] = useState(false);
     const [settingToDelete, setSettingToDelete] = useState(null);
 
     const fetchDatabaseSettings = useCallback(async () => {
         try {
-            const response = await axios.get("http://localhost:10000/api/database-settings");
+            const response = await axios.get("http://localhost:10000/database-settings/list");
+            console.log(response.data);
             setDatabaseSettings(response.data);
         } catch (error) {
             console.error("Failed to fetch database settings:", error);
@@ -58,7 +29,7 @@ const DatabaseSettingList = () => {
     
     const confirmDelete = async () => {
         try {
-            await axios.delete(`http://localhost:8080/api/database-settings/${settingToDelete}`);
+            await axios.delete(`http://localhost:10000/database-settings/${settingToDelete}`);
             setDatabaseSettings(databaseSettings.filter(setting => setting.id !== settingToDelete));
             console.log("Database setting deleted successfully");
         } catch (error) {
@@ -86,8 +57,8 @@ const DatabaseSettingList = () => {
                                 <th>Database URL</th>
                                 <th>Database Name</th>
                                 <th>Username</th>
+                                <th>Password</th>
                                 <th>Created At</th>
-                                <th>Updated At</th>
                                 <th>Actions</th>
                             </tr>
                         </thead>
@@ -98,8 +69,8 @@ const DatabaseSettingList = () => {
                                     <td>{setting.databaseUrl}</td>
                                     <td>{setting.databaseName}</td>
                                     <td>{setting.databaseUsername}</td>
-                                    <td>{new Date(setting.createdAt).toLocaleString()}</td>
-                                    <td>{setting.updatedAt ? new Date(setting.updatedAt).toLocaleString() : 'N/A'}</td>
+                                    <td>{setting.databasePassword}</td>
+                                    <td>{setting.createdAt==null?"N/A":setting.createdAt}</td>
                                     <td className="actions">
                                         <Link to={`/settings/update-database-settings/${setting.id}`}>
                                             <button className="edit-btn" aria-label="Edit database setting">

@@ -1,0 +1,36 @@
+Please help me create a React component/page with the following requirements:
+Core Requirements:
+
+Use modern React practices (functional components, hooks)
+Implement responsive design (mobile-first approach)
+Follow accessibility standards (ARIA labels, semantic HTML)
+
+Add smooth transitions and subtle animations
+Ensure error handling and loading states
+Include proper component documentation
+
+Styling Guidelines:
+
+Clean, minimalist design with ample whitespace
+Consistent spacing using 4px/8px grid system
+Color palette: [Specify your colors or ask for recommendations]
+Typography: Modern, readable fonts with clear hierarchy
+Subtle shadows and rounded corners for depth
+Smooth hover states and transitions (0.2-0.3s)
+Responsive breakpoints: mobile (<768px), tablet (768-1024px), desktop (>1024px)
+
+Specific Technical Requirements:
+
+Use React best practices (useCallback, useMemo where needed)
+Implement error boundaries
+Add proper loading/skeleton states
+Include form validation if applicable
+Ensure proper component composition
+Use proper state management
+Include unit test examples
+
+Please provide:
+
+Component documentation
+Example usage
+Key considerations for implementation

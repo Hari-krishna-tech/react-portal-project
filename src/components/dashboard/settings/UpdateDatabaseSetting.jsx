@@ -34,13 +34,25 @@ const UpdateDatabaseSetting = () => {
   })
 
   const [selectDatabase, setSelectDatabase] = useState("jdbc:mysql://")
+  const [showPassword, setShowPassword] = useState(false);
 
   useEffect(() => {
     const fetchDatabaseSetting = async () => {
       try {
-        const response = await axios.get(`http://localhost:8080/api/database-settings/${id}`)
-        setFormData(response.data)
-        setSelectDatabase(response.data.databaseUrl.split(':')[1])
+        const response = await axios.get(`http://localhost:10000/database-settings/${id}`)
+        
+        // Extract databaseUrl components
+        const fullDatabaseUrl = response.data.databaseUrl;
+        const databasePrefix = fullDatabaseUrl.match(/^jdbc:[^:]+:\/\//)[0];
+        const remainingUrl = fullDatabaseUrl.replace(databasePrefix, '');
+        const [extractedDatabaseUrl, extractedDatabaseName] = remainingUrl.split('/');
+        
+        setFormData({
+          ...response.data,
+          databaseUrl: extractedDatabaseUrl,
+          databaseName: extractedDatabaseName
+        })
+        setSelectDatabase(databasePrefix)
       } catch (error) {
         console.error("Failed to fetch database setting:", error)
       }
@@ -60,9 +72,16 @@ const UpdateDatabaseSetting = () => {
   const handleSubmit = async (e) => {
     e.preventDefault()
     try {
-      const validatedData = databaseSettingSchema.parse(formData)
-      await axios.put(`http://localhost:8080/api/database-settings/${id}`, validatedData)
-      navigate("/settings/database-settings")
+      // Reconstruct full database URL
+      const fullDatabaseUrl = `${selectDatabase}${formData.databaseUrl}/${formData.databaseName}`;
+      const dataToSubmit = {
+        ...formData,
+        databaseUrl: fullDatabaseUrl
+      };
+      
+      const validatedData = databaseSettingSchema.parse(dataToSubmit)
+      await axios.put(`http://localhost:10000/database-settings/${id}`, validatedData)
+      navigate("/settings/database-settings/list")
     } catch (error) {
       console.error("Failed to update database setting:", error)
     }
@@ -104,7 +123,21 @@ const UpdateDatabaseSetting = () => {
 
           <div className="form-group">
             <label><i className="fas fa-key"></i> Database Password</label>
-            <input value={formData.databasePassword} name='databasePassword' type="password" onChange={handleChange}/>
+            <div className="password-input-wrapper">
+              <input 
+                value={formData.databasePassword} 
+                name='databasePassword' 
+                type={showPassword ? "text" : "password"} 
+                onChange={handleChange}
+              />
+              <button 
+                type="button" 
+                className="password-toggle" 
+                onClick={() => setShowPassword(!showPassword)}
+              >
+                <i className={`fas ${showPassword ? 'fa-eye-slash' : 'fa-eye'}`}></i>
+              </button>
+            </div>
           </div>
 
           <div className="form-actions">
