@@ -14,8 +14,9 @@
     background-color: #ffffff;
     border-radius: 12px;
     box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
-    overflow: hidden;
+    overflow-x: auto;
     transition: box-shadow 0.3s ease, transform 0.3s ease;
+    -webkit-overflow-scrolling: touch;
 }
 
 /* .seasonal-logs .table-container:hover {
@@ -25,8 +26,11 @@
 
 .seasonal-logs table {
     width: 100%;
+    min-width: 800px;
     border-collapse: separate;
     border-spacing: 0;
+    
+    
 }
 
 .seasonal-logs th,
@@ -35,6 +39,7 @@
     text-align: left;
     border-bottom: 1px solid #e0e0e0;
     font-size: small;
+    
 }
 
 .seasonal-logs th {
@@ -44,6 +49,25 @@
     text-transform: uppercase;
     letter-spacing: 0.5px;
     font-size: small;
+}
+
+/* Scrollbar styling */
+.seasonal-logs .table-container::-webkit-scrollbar {
+    height: 8px;
+}
+
+.seasonal-logs .table-container::-webkit-scrollbar-track {
+    background: #f1f1f1;
+    border-radius: 4px;
+}
+
+.seasonal-logs .table-container::-webkit-scrollbar-thumb {
+    background: #888;
+    border-radius: 4px;
+}
+
+.seasonal-logs .table-container::-webkit-scrollbar-thumb:hover {
+    background: #555;
 }
 
 .seasonal-logs tr:last-child td {

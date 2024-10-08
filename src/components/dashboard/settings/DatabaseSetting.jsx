@@ -106,7 +106,7 @@ const DatabaseSetting = () => {
             </div>
             <div className="form-group">
                 <label><i className="fas fa-server"></i> Select Database</label>
-                <select id="database" value={selectDatabase} onChange={() => setSelectDatabase(selectDatabase)}>
+                <select id="database" value={selectDatabase} onChange={(e) => setSelectDatabase(e.target.value)}>
                   <option value="jdbc:mysql://">MySQL</option>
                   <option value="jdbc:postgresql://">PostgreSQL</option>
                   <option value="jdbc:sqlserver://">MS SQL</option>

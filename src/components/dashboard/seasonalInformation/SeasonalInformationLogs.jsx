@@ -3,68 +3,6 @@ import { format, parseISO } from 'date-fns';
 import axios from 'axios';
 import "./SeasonalInformationLogs.css";
 
-const fakeSeasonalLogs = [
-  {
-    id: 1,
-    origin: 'USA',
-    commodity: 'Corn',
-    email_send_date: '2023-01-15',
-    email_send_status: 'Sent',
-    operating_group: 'Agriculture',
-    season_from: 'March',
-    season_to: 'May',
-    email_send_time: '10:00 AM',
-    email_subject: 'Corn Seasonal Update',
-    email_body: 'This is a reminder for the upcoming corn season.',
-    email_to: 'farmer@example.com',
-    email_cc: 'manager@example.com'
-  },
-  {
-    id: 2,
-    origin: 'Canada',
-    commodity: 'Wheat',
-    email_send_date: '2023-02-20',
-    email_send_status: 'Pending',
-    operating_group: 'Agriculture',
-    season_from: 'June',
-    season_to: 'August',
-    email_send_time: '11:30 AM',
-    email_subject: 'Wheat Seasonal Update',
-    email_body: 'This is a reminder for the upcoming wheat season.This is a reminder for the upcoming wheat season.This is a reminder for the upcoming wheat season.This is a reminder for the upcoming wheat season.This is a reminder for the upcoming wheat season.This is a reminder for the upcoming wheat season.',
-    email_to: 'farmer2@example.com',
-    email_cc: 'manager2@example.com'
-  },
-  {
-    id: 3,
-    origin: 'Brazil',
-    commodity: 'Soybeans',
-    email_send_date: '2023-03-10',
-    email_send_status: 'Failed',
-    operating_group: 'Agriculture',
-    season_from: 'September',
-    season_to: 'November',
-    email_send_time: '09:15 AM',
-    email_subject: 'Soybeans Seasonal Update',
-    email_body: 'This is a reminder for the upcoming soybeans season.',
-    email_to: 'farmer3@example.com',
-    email_cc: 'manager3@example.com'
-  },
-  {
-    id: 4,
-    origin: 'Australia',
-    commodity: 'Barley',
-    email_send_date: '2023-04-05',
-    email_send_status: 'Sent',
-    operating_group: 'Agriculture',
-    season_from: 'December',
-    season_to: 'February',
-    email_send_time: '02:00 PM',
-    email_subject: 'Barley Seasonal Update',
-    email_body: 'This is a reminder for the upcoming barley season.',
-    email_to: 'farmer4@example.com',
-    email_cc: 'manager4@example.com'
-  }
-];
 
 const SeasonalInformationLogs = () => {
   const [seasonalLogs, setSeasonalLogs] = useState([]);
@@ -99,7 +37,7 @@ const SeasonalInformationLogs = () => {
   return (
     <div className="seasonal-logs">
       <div className="container">
-        <h1 className="page-title">Seasonal Information Logs</h1>
+        <h1 className="page-title">Pre Seasonal - Email Logs</h1>
         <div className="table-container">
           <table>
             <thead>

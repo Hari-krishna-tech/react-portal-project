@@ -20,8 +20,8 @@ const jobSchema = zod.object({
   endDateTime: zod.string(),
   createdBy: zod.string(),
   createdAt: zod.string(),
-  updatedBy: zod.string().optional(),
-  updatedAt: zod.string().optional(),
+  updatedBy: zod.string(),
+  updatedAt: zod.string(),
 });
 
 const UpdateJob = ({jobId}) => {
@@ -29,14 +29,14 @@ const UpdateJob = ({jobId}) => {
   const [formData, setFormData] = useState({
     jobName: "",
     sqlQuery: [""],
-    databaseSettingsId: "",
-    keyUserEmail: [""],
-    cc: [""],
+    databaseSettingsId: -1,
+    keyUserEmail: '',
+    cc: '',
     emailBody: "",
     emailSubject: "",
     cronFrequency: "",
-    startDateTime: new Date().toISOString().slice(0, 16),
-    endDateTime: new Date().toISOString().slice(0, 16),
+    startDateTime: "",
+    endDateTime: "",
     createdBy: "",
     createdAt: null,
     updatedBy: user,
@@ -61,8 +61,10 @@ const UpdateJob = ({jobId}) => {
         setFormData({
           ...jobData,
           databaseSettingsId: jobData.databaseSettings.id,
-          startDateTime: new Date(jobData.startDateTime).toISOString().slice(0, 16),
-          endDateTime: new Date(jobData.endDateTime).toISOString().slice(0, 16),
+          updatedAt : new Date().toISOString(0,16),
+          updatedBy: user,
+          keyUserEmail: jobData.keyUserEmail.reduce((acc, key) => acc +";" + key),
+          cc: jobData.cc.reduce((acc, cc) => acc +";" + cc)
         });
       })
       .catch(err => console.error("Error fetching job data:", err));
@@ -107,8 +109,9 @@ const UpdateJob = ({jobId}) => {
 
   const handleSubmit = (e) => {
     e.preventDefault();
-
+    console.log(formData);
     const result = jobSchema.safeParse(formData);
+    
     if(!result.success || !Cron(formData.cronFrequency).isValid()) {
       setShowModal(true);
       console.log(result.error?.message);
@@ -167,31 +170,23 @@ const UpdateJob = ({jobId}) => {
             </div>
             <div className="form-group">
               <label><i className="fas fa-envelope"></i> Key User Emails</label>
-              {formData.keyUserEmail.map((email, index) => (
-                <div key={index} className="array-input">
-                  <input value={email} name='keyUserEmail' type="email" onChange={(e) => handleArrayChange(e, index, 'keyUserEmail')} />
-                  <button type="button" className="icon-button add" onClick={() => addArrayField('keyUserEmail')}>
-                    <i className="fas fa-plus"></i>
-                  </button>
-                  <button type="button" className="icon-button remove" onClick={() => deleteArrayField('keyUserEmail', index)}>
-                    <i className="fas fa-minus"></i>
-                  </button>
-                </div>
-              ))}
+              <textarea
+                name="keyUserEmail"
+                value={formData.keyUserEmail}
+                onChange={handleChange}
+                rows="3"
+                placeholder="Enter emails separated by semicolons (e.g., user1@example.com;user2@example.com)"
+              />
             </div>
             <div className="form-group">
               <label><i className="fas fa-envelope"></i> CC Emails</label>
-              {formData.cc.map((email, index) => (
-                <div key={index} className="array-input">
-                  <input value={email} name='cc' type="email" onChange={(e) => handleArrayChange(e, index, 'cc')} />
-                  <button type="button" className="icon-button add" onClick={() => addArrayField('cc')}>
-                    <i className="fas fa-plus"></i>
-                  </button>
-                  <button type="button" className="icon-button remove" onClick={() => deleteArrayField('cc', index)}>
-                    <i className="fas fa-minus"></i>
-                  </button>
-                </div>
-              ))}
+              <textarea
+                name="cc"
+                value={formData.cc}
+                onChange={handleChange}
+                rows="3"
+                placeholder="Enter emails separated by semicolons (e.g., cc1@example.com;cc2@example.com)"
+              />
             </div>
             <div className="form-group">
               <label><i className="fas fa-heading"></i> Email Subject</label>

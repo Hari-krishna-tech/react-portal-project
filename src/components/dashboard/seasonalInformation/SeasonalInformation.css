@@ -13,17 +13,14 @@
     background-color: #ffffff;
     border-radius: 12px;
     box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
-    overflow: hidden;
+    overflow-x: auto; /* Enable horizontal scrolling */
     transition: box-shadow 0.3s ease, transform 0.3s ease;
+    -webkit-overflow-scrolling: touch; /* Smooth scrolling on iOS */
 }
-/* 
-.seasonal-information .table-container:hover {
-    box-shadow: 0 6px 25px rgba(0, 0, 0, 0.15);
-    transform: translateY(-5px);
-} */
 
 .seasonal-information table {
     width: 100%;
+    min-width: 900px; /* Prevent table from becoming too cramped */
     border-collapse: separate;
     border-spacing: 0;
 }
@@ -34,6 +31,7 @@
     text-align: left;
     border-bottom: 1px solid #e0e0e0;
     font-size: small;
+    white-space: nowrap; /* Prevent text wrapping */
 }
 
 .seasonal-information th {
@@ -43,6 +41,28 @@
     text-transform: uppercase;
     letter-spacing: 0.5px;
     font-size: small;
+    position: sticky; /* Make headers sticky */
+    top: 0;
+    z-index: 1;
+}
+
+/* Scrollbar styling */
+.seasonal-information .table-container::-webkit-scrollbar {
+    height: 8px;
+}
+
+.seasonal-information .table-container::-webkit-scrollbar-track {
+    background: #f1f1f1;
+    border-radius: 4px;
+}
+
+.seasonal-information .table-container::-webkit-scrollbar-thumb {
+    background: #888;
+    border-radius: 4px;
+}
+
+.seasonal-information .table-container::-webkit-scrollbar-thumb:hover {
+    background: #555;
 }
 
 .seasonal-information tr:last-child td {
@@ -58,17 +78,6 @@
     cursor: pointer;
 }
 
-@media (max-width: 768px) {
-    .seasonal-information {
-        padding: 1rem;
-    }
-
-    .seasonal-information th,
-    .seasonal-information td {
-        padding: 1rem 0.75rem;
-    }
-}
-
 .seasonal-information .page-title {
     font-size: 1.2rem;
     color: #333;
@@ -78,6 +87,118 @@
     text-transform: uppercase;
     letter-spacing: 1px;
     padding-bottom: 0.5rem;
-    /* border-bottom: 3px solid #1877f2; */
     display: inline-block;
+}
+
+/* Responsive styles */
+@media (max-width: 1024px) {
+    .seasonal-information .container {
+        padding: 0 1rem;
+    }
+
+    .seasonal-information .table-container {
+        margin: 0 -1rem; /* Negative margin to allow full-width scrolling */
+        border-radius: 0;
+    }
+
+    /* Add scroll indicators */
+    .seasonal-information .table-container::after {
+        content: '';
+        position: absolute;
+        top: 0;
+        right: 0;
+        bottom: 0;
+        width: 30px;
+        background: linear-gradient(to right, transparent, rgba(255,255,255,0.9));
+        pointer-events: none;
+        opacity: 0;
+        transition: opacity 0.3s;
+    }
+
+    .seasonal-information .table-container:hover::after {
+        opacity: 1;
+    }
+}
+
+@media (max-width: 768px) {
+    .seasonal-information {
+        padding: 0.5rem;
+    }
+
+    .seasonal-information th,
+    .seasonal-information td {
+        padding: 0.75rem 0.5rem;
+    }
+}
+
+.seasonal-information .product-selector {
+    margin-bottom: 30px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 10px;
+  
+}
+
+/* .seasonal-information .product-dropdown {
+    padding: 8px 16px;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    font-size: 16px;
+    min-width: 200px;
+    background-color: white;
+    cursor: pointer;
+} */
+
+.seasonal-information label {
+    font-weight: 500;
+    margin-bottom: 0.5rem;
+    color: #34495e;
+  }
+
+  .seasonal-information select {
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    font-size: 16px;
+    min-width: 200px;
+    background-color: white;
+    cursor: pointer;
+  padding: 0.5rem;
+  border: 2px solid #bdc3c7;
+  border-radius: 6px;
+  font-size: 1rem;
+  transition: all 0.3s ease;
+  width: 30%;
+  box-sizing: border-box;
+  
+  }
+
+  .seasonal-information select {
+    appearance: none;
+    background-color: #ffffff;
+    border: 2px solid #bdc3c7;
+    border-radius: 8px;
+    padding: 8px 16px;
+    font-size: 1rem;
+    color: #34495e;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='24' height='24' viewBox='0 0 24 24' fill='none' stroke='%2334495e' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpolyline points='6 9 12 15 18 9'%3E%3C/polyline%3E%3C/svg%3E");
+    background-repeat: no-repeat;
+    background-position: right 12px center;
+    background-size: 16px;
+  }
+
+
+  .seasonal-information  select:focus {
+    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='24' height='24' viewBox='0 0 24 24' fill='none' stroke='%233498db' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpolyline points='18 15 12 9 6 15'%3E%3C/polyline%3E%3C/svg%3E");
+  }
+
+.seasonal-information select:focus {
+  outline: none;
+  border-color: #3498db;
+}
+.seasonal-information .product-dropdown:focus {
+    outline: none;
+  border-color: #007bff;
 }

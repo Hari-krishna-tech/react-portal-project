@@ -57,7 +57,7 @@ const ReportScheduler = () => {
     const confirmDelete = async () => {
         try {
           
-            await axios.delete(`http://localhost:8080/api/jobs/${jobToDelete}`);
+            await axios.delete(`http://localhost:10000/api/jobs/${jobToDelete}`);
             setJobs(jobs.filter(job => job.id !== jobToDelete));
             
             console.log("Job deleted successfully");

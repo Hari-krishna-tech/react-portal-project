@@ -3,89 +3,21 @@ import { format, parseISO } from 'date-fns';
 import axios from 'axios';
 import "./SeasonalInformation.css";
 
-// add dummy data
-const fakeSeasonalInfo = [
-  {
-    id: 1,
-    origin: 'USA',
-    commodity: 'Corn',
-    operating_group: 'Agriculture',
-    season_from: 'March',
-    season_to: 'May',
-    reminder_date: '2023-03-01'
-  },
-  {
-    id: 2,
-    origin: 'Canada',
-    commodity: 'Wheat',
-    operating_group: 'Agriculture',
-    season_from: 'June',
-    season_to: 'August',
-    reminder_date: '2023-06-01'
-  },
-  {
-    id: 3,
-    origin: 'Brazil',
-    commodity: 'Soybeans',
-    operating_group: 'Agriculture',
-    season_from: 'September',
-    season_to: 'November',
-    reminder_date: '2023-09-01'
-  },
-  {
-    id: 4,
-    origin: 'Australia',
-    commodity: 'Barley',
-    operating_group: 'Agriculture',
-    season_from: 'December',
-    season_to: 'February',
-    reminder_date: '2023-12-01'
-  },
-  {
-    id: 5,
-    origin: 'India',
-    commodity: 'Rice',
-    operating_group: 'Agriculture',
-    season_from: 'July',
-    season_to: 'September',
-    reminder_date: '2023-07-15'
-  },
-  {
-    id: 6,
-    origin: 'Argentina',
-    commodity: 'Beef',
-    operating_group: 'Livestock',
-    season_from: 'Year-round',
-    season_to: 'Year-round',
-    reminder_date: '2023-01-10'
-  },
-  {
-    id: 7,
-    origin: 'China',
-    commodity: 'Tea',
-    operating_group: 'Agriculture',
-    season_from: 'March',
-    season_to: 'May',
-    reminder_date: '2023-04-20'
-  },
-  {
-    id: 8,
-    origin: 'Mexico',
-    commodity: 'Avocado',
-    operating_group: 'Agriculture',
-    season_from: 'June',
-    season_to: 'August',
-    reminder_date: '2023-08-05'
-  }
-];
+
+
 
 const SeasonalInformation = () => {
   const [seasonalInfo, setSeasonalInfo] = useState([]);
-  // const [activeTab, setActiveTab] = useState('info');
+  const [selectedProduct, setSelectedProduct] = useState("");
 
-  const fetchSeasonalInfo = useCallback(async () => {
+  const products = [
+    {value: 'dw', label: 'DW'},
+    {value: 'ofi direct', label: 'OFI Direct'}
+  ]
+
+  const fetchSeasonalInfo = useCallback(async (product) => {
     try {
-      const response = await axios.get("http://localhost:9081/seasonal-info/list");
+      const response = await axios.get(`http://localhost:9081/seasonal-info/list/${product}`);
       setSeasonalInfo(response.data);
     } catch (error) {
       console.log("Failed to fetch seasonal information:", error);
@@ -93,19 +25,44 @@ const SeasonalInformation = () => {
   }, []);
 
 
+ 
+    
+
+
 
 
   useEffect(() => {
-    fetchSeasonalInfo();
+    fetchSeasonalInfo(selectedProduct);
    
-  }, [fetchSeasonalInfo]);
+  }, [fetchSeasonalInfo, selectedProduct]);
 
-  const formattedDate = (isoString) => format(parseISO(isoString), 'PP');
+  const formattedDate = (isoString) => format(parseISO(isoString), 'ppPP');
+
+  const handleProductChange = (event) => {
+    setSelectedProduct(event.target.value);
+  };
 
   return (
     <div className="seasonal-information">
       <div className="container">
         <h1 className="page-title">Seasonal Information List</h1>
+
+        <div className="product-selector">
+          <label htmlFor="product-select">Select Product:</label>
+          <select 
+            id="product-select" 
+            value={selectedProduct} 
+            onChange={handleProductChange}
+            className="product-dropdown"
+          > 
+             <option value="">Select Product</option>
+            {products.map(product => (
+              <option key={product.value} value={product.value}>
+                {product.label}
+              </option>
+            ))}
+          </select>
+        </div>
         <div className="table-container">
           <table>
             <thead>

@@ -156,6 +156,7 @@
 .navbar {
   position: sticky;
   top: 0;
+  height: 60px;
   width: 100%;
   z-index: 1000;
   background-color: #fff;
@@ -181,9 +182,9 @@
 /* Sidebar styles */
 .sidebar {
   position: fixed;
-  top: 60px; /* Height of navbar */
-  left: -250px;
-  width: 250px;
+top: 60px; /* Height of navbar */
+  left: -225px;
+  width: 225px;
   height: calc(100vh - 60px);
   /* background-color: #fff; */
   box-shadow: 2px 0 5px rgba(0, 0, 0, 0.1);
@@ -194,7 +195,7 @@
 
 /* Sidebar open state */
 .sidebar.open {
-  transform: translateX(250px);
+  transform: translateX(225px);
 }
 
 /* Desktop styles (> 768px) */

@@ -1,7 +1,7 @@
 .database-setting-list {
     min-height: calc(100vh - 60px);
     background-color: #f0f2f5;
-    padding: 1rem;
+    padding: 0.8rem;
 }
 
 .database-setting-list .page-title {
@@ -18,23 +18,23 @@
 
 .database-setting-list .container {
     max-width: 1200px;
-    margin: 0 auto;
+    margin: 0;
 }
 
 .database-setting-list .table-container {
     background-color: #ffffff;
     border-radius: 8px;
     box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
-    overflow: hidden;
+    overflow-x: auto; /* Add horizontal scroll */
     transition: box-shadow 0.3s ease;
+    /* Ensure smooth scrolling on all browsers */
+    -webkit-overflow-scrolling: touch;
 }
 
-.database-setting-list .table-container:hover {
-    box-shadow: 0 6px 25px rgba(0, 0, 0, 0.15);
-}
-
+/* Add min-width to table to prevent squishing */
 .database-setting-list table {
     width: 100%;
+    min-width: 875px; /* Minimum width to prevent content from becoming too cramped */
     border-collapse: separate;
     border-spacing: 0;
 }
@@ -44,9 +44,30 @@
     padding: 1rem 0.75rem;
     text-align: left;
     border-bottom: 1px solid #e0e0e0;
-    font-size: small;
+    font-size: x-small;
+     /* Prevent text wrapping in cells */
 }
 
+/* Style the scrollbar for better visibility */
+.database-setting-list .table-container::-webkit-scrollbar {
+    height: 8px;
+}
+
+.database-setting-list .table-container::-webkit-scrollbar-track {
+    background: #f1f1f1;
+    border-radius: 4px;
+}
+
+.database-setting-list .table-container::-webkit-scrollbar-thumb {
+    background: #888;
+    border-radius: 4px;
+}
+
+.database-setting-list .table-container::-webkit-scrollbar-thumb:hover {
+    background: #555;
+}
+
+/* Rest of the styles remain the same */
 .database-setting-list th {
     background-color: #f5f5f5;
     font-weight: 600;
@@ -55,6 +76,9 @@
     letter-spacing: 0.5px;
     font-size: small;
     border-top: 1px solid #e0e0e0;
+    position: sticky; /* Make headers sticky */
+    top: 0;
+    z-index: 1;
 }
 
 .database-setting-list th:first-child {
@@ -110,6 +134,36 @@
 .database-setting-list .delete-btn:hover {
     color: #ffffff;
     background-color: #e74c3c;
+}
+
+/* Responsive adjustments */
+@media (max-width: 1024px) {
+    .database-setting-list .container {
+        padding: 0 1rem;
+    }
+
+    .database-setting-list .table-container {
+        margin: 0 -1rem; /* Negative margin to allow full-width scrolling */
+        border-radius: 0;
+    }
+    
+    /* Add scroll indicators */
+    .database-setting-list .table-container::after {
+        content: '';
+        position: absolute;
+        top: 0;
+        right: 0;
+        bottom: 0;
+        width: 30px;
+        background: linear-gradient(to right, transparent, rgba(255,255,255,0.9));
+        pointer-events: none;
+        opacity: 0;
+        transition: opacity 0.3s;
+    }
+    
+    .database-setting-list .table-container:hover::after {
+        opacity: 1;
+    }
 }
 
 /* Modal styles (same as ReportScheduler.css) */

@@ -10,7 +10,7 @@ import './ReportSchedulerCreateJob.css';
 const jobSchema = zod.object({
   jobName: zod.string().min(1).max(50),
   sqlQuery: zod.array(zod.string().min(1).max(1000)).min(1),
-  databaseSettingsId: zod.number().positive(),
+  databaseSettingsId: zod.string(),
   keyUserEmail: zod.array(zod.string().email()),
   cc: zod.array(zod.string().email()).optional(),
   emailBody: zod.string().min(1).max(1000),
@@ -30,11 +30,11 @@ const CreateJob = () => {
     jobName: "",
     sqlQuery: [""],
     databaseSettingsId: "",
-    keyUserEmail: [""],
-    cc: [""],
+    keyUserEmail: "",
+    cc: "",
     emailBody: "",
     emailSubject: "",
-    cronFrequency: "",
+    cronFrequency: "0 * * * *",
     startDateTime: new Date().toISOString().slice(0, 16),
     endDateTime: new Date().toISOString().slice(0, 16),
     createdBy: user,
@@ -95,7 +95,14 @@ const CreateJob = () => {
   const handleSubmit = (e) => {
     e.preventDefault();
 
-    const result = jobSchema.safeParse(formData);
+    // Convert semicolon-separated emails to arrays before validation
+    const submissionData = {
+      ...formData,
+      keyUserEmail: formData.keyUserEmail.split(';').map(email => email.trim()).filter(email => email),
+      cc: formData.cc.split(';').map(email => email.trim()).filter(email => email)
+    };
+
+    const result = jobSchema.safeParse(submissionData);
     if(!result.success || !Cron(formData.cronFrequency).isValid()) {
       setShowModal(true);
       console.log(result.error?.message);
@@ -154,31 +161,23 @@ const CreateJob = () => {
             </div>
             <div className="form-group">
               <label><i className="fas fa-envelope"></i> Key User Emails</label>
-              {formData.keyUserEmail.map((email, index) => (
-                <div key={index} className="array-input">
-                  <input value={email} name='keyUserEmail' type="email" onChange={(e) => handleArrayChange(e, index, 'keyUserEmail')} />
-                  <button type="button" className="icon-button add" onClick={() => addArrayField('keyUserEmail')}>
-                    <i className="fas fa-plus"></i>
-                  </button>
-                  <button type="button" className="icon-button remove" onClick={() => deleteArrayField('keyUserEmail', index)}>
-                    <i className="fas fa-minus"></i>
-                  </button>
-                </div>
-              ))}
+              <textarea
+                name="keyUserEmail"
+                value={formData.keyUserEmail}
+                onChange={handleChange}
+                rows="3"
+                placeholder="Enter emails separated by semicolons (e.g., user1@example.com;user2@example.com)"
+              />
             </div>
             <div className="form-group">
               <label><i className="fas fa-envelope"></i> CC Emails</label>
-              {formData.cc.map((email, index) => (
-                <div key={index} className="array-input">
-                  <input value={email} name='cc' type="email" onChange={(e) => handleArrayChange(e, index, 'cc')} />
-                  <button type="button" className="icon-button add" onClick={() => addArrayField('cc')}>
-                    <i className="fas fa-plus"></i>
-                  </button>
-                  <button type="button" className="icon-button remove" onClick={() => deleteArrayField('cc', index)}>
-                    <i className="fas fa-minus"></i>
-                  </button>
-                </div>
-              ))}
+              <textarea
+                name="cc"
+                value={formData.cc}
+                onChange={handleChange}
+                rows="3"
+                placeholder="Enter emails separated by semicolons (e.g., cc1@example.com;cc2@example.com)"
+              />
             </div>
             <div className="form-group">
               <label><i className="fas fa-heading"></i> Email Subject</label>
