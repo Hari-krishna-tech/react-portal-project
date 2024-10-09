@@ -9,7 +9,7 @@ import './ReportSchedulerCreateJob.css';
 
 const jobSchema = zod.object({
   jobName: zod.string().min(1).max(50),
-  sqlQuery: zod.array(zod.string().min(1).max(1000)).min(1),
+  sqlQuery: zod.array(zod.string().min(1).max(100000)).min(1),
   databaseSettingsId: zod.string(),
   keyUserEmail: zod.array(zod.string().email()),
   cc: zod.array(zod.string().email()).optional(),
@@ -24,6 +24,17 @@ const jobSchema = zod.object({
   updatedAt: zod.string().optional(),
 });
 
+  // Helper function to get local datetime string
+  const getLocalDateTime = () => {
+    const now = new Date();
+    const year = now.getFullYear();
+    const month = String(now.getMonth() + 1).padStart(2, '0');
+    const day = String(now.getDate()).padStart(2, '0');
+    const hours = String(now.getHours()).padStart(2, '0');
+    const minutes = String(now.getMinutes()).padStart(2, '0');
+    return `${year}-${month}-${day}T${hours}:${minutes}`;
+  };
+
 const CreateJob = () => {
   const user = useSelector(state => state.auth.user);
   const [formData, setFormData] = useState({
@@ -35,10 +46,10 @@ const CreateJob = () => {
     emailBody: "",
     emailSubject: "",
     cronFrequency: "0 * * * *",
-    startDateTime: new Date().toISOString().slice(0, 16),
-    endDateTime: new Date().toISOString().slice(0, 16),
+    startDateTime: getLocalDateTime(),
+    endDateTime: getLocalDateTime(),
     createdBy: user,
-    createdAt: new Date().toISOString(),
+    createdAt: getLocalDateTime(),
     updatedBy: "",
     updatedAt: "",
   });

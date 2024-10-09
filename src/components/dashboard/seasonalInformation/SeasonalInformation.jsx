@@ -16,6 +16,10 @@ const SeasonalInformation = () => {
   ]
 
   const fetchSeasonalInfo = useCallback(async (product) => {
+    if (product.length === 0) {
+      setSeasonalInfo([]);
+      return;
+    }
     try {
       const response = await axios.get(`http://localhost:9081/seasonal-info/list/${product}`);
       setSeasonalInfo(response.data);

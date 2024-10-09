@@ -50,7 +50,9 @@ const UpdateDatabaseSetting = () => {
         setFormData({
           ...response.data,
           databaseUrl: extractedDatabaseUrl,
-          databaseName: extractedDatabaseName
+          databaseName: extractedDatabaseName,
+          updatedBy: user,
+          updatedAt: new Date().toISOString()
         })
         setSelectDatabase(databasePrefix)
       } catch (error) {

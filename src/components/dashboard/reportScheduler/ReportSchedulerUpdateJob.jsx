@@ -9,7 +9,7 @@ import './ReportSchedulerUpdateJob.css';
 
 const jobSchema = zod.object({
   jobName: zod.string().min(1).max(50),
-  sqlQuery: zod.array(zod.string().min(1).max(1000)).min(1),
+  sqlQuery: zod.array(zod.string().min(1).max(100000)).min(1),
   databaseSettingsId: zod.number().positive(),
   keyUserEmail: zod.array(zod.string().email()),
   cc: zod.array(zod.string().email()).optional(),
@@ -23,6 +23,17 @@ const jobSchema = zod.object({
   updatedBy: zod.string(),
   updatedAt: zod.string(),
 });
+
+  // Helper function to get local datetime string
+  const getLocalDateTime = () => {
+    const now = new Date();
+    const year = now.getFullYear();
+    const month = String(now.getMonth() + 1).padStart(2, '0');
+    const day = String(now.getDate()).padStart(2, '0');
+    const hours = String(now.getHours()).padStart(2, '0');
+    const minutes = String(now.getMinutes()).padStart(2, '0');
+    return `${year}-${month}-${day}T${hours}:${minutes}`;
+  };
 
 const UpdateJob = ({jobId}) => {
   const user = useSelector(state => state.auth.user);
@@ -40,7 +51,7 @@ const UpdateJob = ({jobId}) => {
     createdBy: "",
     createdAt: null,
     updatedBy: user,
-    updatedAt: new Date().toISOString(),
+    updatedAt: getLocalDateTime(),
   });
 
   const [databaseSettings, setDatabaseSettings] = useState([]);
@@ -61,7 +72,7 @@ const UpdateJob = ({jobId}) => {
         setFormData({
           ...jobData,
           databaseSettingsId: jobData.databaseSettings.id,
-          updatedAt : new Date().toISOString(0,16),
+          updatedAt : getLocalDateTime(),
           updatedBy: user,
           keyUserEmail: jobData.keyUserEmail.reduce((acc, key) => acc +";" + key),
           cc: jobData.cc.reduce((acc, cc) => acc +";" + cc)

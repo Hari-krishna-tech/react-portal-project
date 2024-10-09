@@ -45,6 +45,7 @@ const SeasonalInformationLogs = () => {
                 <th>Origin</th>
                 <th>Commodity</th>
                 <th>Operating Group</th>
+                <th>Product</th>
                 <th>Email Send DateTime</th>
                 <th>Season Start's</th>
                 <th>Status</th>
@@ -57,6 +58,9 @@ const SeasonalInformationLogs = () => {
                   <td>{log.seasonalInfo.origin?.commodity}</td>
                   <td>
                     {log.seasonalInfo.entity.name}
+                  </td>
+                  <td>
+                    {log.seasonalInfo.product}
                   </td>
                   <td>
                     {log.seasonalInfo.seasonFrom}
