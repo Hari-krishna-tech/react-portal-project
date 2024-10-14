@@ -83,7 +83,7 @@ const SeasonalInformationLogs = () => {
                   
                   
                   
-                  <p><strong>Email Send Date Time:</strong> <span>{formattedDate(selectedLog.emailSendDateTime)}</span></p>
+                  <p><strong>Date Time:</strong> <span>{formattedDate(selectedLog.emailSendDateTime)}</span></p>
                   
                   
                   

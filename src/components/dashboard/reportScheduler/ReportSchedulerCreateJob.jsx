@@ -1,11 +1,11 @@
-import React, { useState, useEffect, useRef } from 'react';
-import { useNavigate, Link } from 'react-router-dom';
-import { useSelector } from 'react-redux';
-import axios from 'axios';
-import cronstrue from 'cronstrue';
-import Cron from 'cron-validate'
-import zod from 'zod';
-import './ReportSchedulerCreateJob.css';
+import React, { useState, useEffect, useRef } from "react";
+import { useNavigate, Link } from "react-router-dom";
+import { useSelector } from "react-redux";
+import axios from "axios";
+import cronstrue from "cronstrue";
+import Cron from "cron-validate";
+import zod from "zod";
+import "./ReportSchedulerCreateJob.css";
 
 const jobSchema = zod.object({
   jobName: zod.string().min(1).max(50),
@@ -24,19 +24,19 @@ const jobSchema = zod.object({
   updatedAt: zod.string().optional(),
 });
 
-  // Helper function to get local datetime string
-  const getLocalDateTime = () => {
-    const now = new Date();
-    const year = now.getFullYear();
-    const month = String(now.getMonth() + 1).padStart(2, '0');
-    const day = String(now.getDate()).padStart(2, '0');
-    const hours = String(now.getHours()).padStart(2, '0');
-    const minutes = String(now.getMinutes()).padStart(2, '0');
-    return `${year}-${month}-${day}T${hours}:${minutes}`;
-  };
+// Helper function to get local datetime string
+const getLocalDateTime = () => {
+  const now = new Date();
+  const year = now.getFullYear();
+  const month = String(now.getMonth() + 1).padStart(2, "0");
+  const day = String(now.getDate()).padStart(2, "0");
+  const hours = String(now.getHours()).padStart(2, "0");
+  const minutes = String(now.getMinutes()).padStart(2, "0");
+  return `${year}-${month}-${day}T${hours}:${minutes}`;
+};
 
 const CreateJob = () => {
-  const user = useSelector(state => state.auth.user);
+  const user = useSelector((state) => state.auth.user);
   const [formData, setFormData] = useState({
     jobName: "",
     sqlQuery: [""],
@@ -61,15 +61,16 @@ const CreateJob = () => {
 
   useEffect(() => {
     // Fetch database settings
-    axios.get('http://localhost:10000/database-settings/list/id')
-      .then(res => setDatabaseSettings(res.data))
-      .catch(err => console.error("Error fetching database settings:", err));
+    axios
+      .get("http://localhost:10000/database-settings/list/id")
+      .then((res) => setDatabaseSettings(res.data))
+      .catch((err) => console.error("Error fetching database settings:", err));
   }, []);
 
   const handleChange = (e) => {
     setFormData({
       ...formData,
-      [e.target.name]: e.target.value
+      [e.target.name]: e.target.value,
     });
   };
 
@@ -78,30 +79,30 @@ const CreateJob = () => {
     newArray[index] = e.target.value;
     setFormData({
       ...formData,
-      [field]: newArray
+      [field]: newArray,
     });
   };
 
   const deleteArrayField = (field, index) => {
     const newArray = [...formData[field]];
-    if(newArray.length === 1) return;
+    if (newArray.length === 1) return;
     newArray.splice(index, 1);
     setFormData({
       ...formData,
-      [field]: newArray
+      [field]: newArray,
     });
-  }
+  };
 
   const addArrayField = (field) => {
     setFormData({
       ...formData,
-      [field]: [...formData[field], ""]
+      [field]: [...formData[field], ""],
     });
   };
 
   const closeModal = () => {
     setShowModal(false);
-  }
+  };
 
   const handleSubmit = (e) => {
     e.preventDefault();
@@ -109,23 +110,30 @@ const CreateJob = () => {
     // Convert semicolon-separated emails to arrays before validation
     const submissionData = {
       ...formData,
-      keyUserEmail: formData.keyUserEmail.split(';').map(email => email.trim()).filter(email => email),
-      cc: formData.cc.split(';').map(email => email.trim()).filter(email => email)
+      keyUserEmail: formData.keyUserEmail
+        .split(";")
+        .map((email) => email.trim())
+        .filter((email) => email),
+      cc: formData.cc
+        .split(";")
+        .map((email) => email.trim())
+        .filter((email) => email),
     };
 
     const result = jobSchema.safeParse(submissionData);
-    if(!result.success || !Cron(formData.cronFrequency).isValid()) {
+    if (!result.success || !Cron(formData.cronFrequency).isValid()) {
       setShowModal(true);
       console.log(result.error?.message);
       return;
     }
 
-    axios.post(`http://localhost:10000/api/jobs`, result.data)
-      .then(res => {
+    axios
+      .post(`http://localhost:10000/api/jobs`, result.data)
+      .then((res) => {
         console.log(res.data);
         linkRef.current.click();
       })
-      .catch(error => {
+      .catch((error) => {
         console.log(error);
         // TODO: Show modal about error from the backend
       });
@@ -135,35 +143,53 @@ const CreateJob = () => {
     <>
       <div className="create-job-container">
         <div className="create-job-form">
-          <h1 className="form-title"><i className="fas fa-calendar-plus"></i> Create New Job</h1>
+          <h1 className="form-title"> Create New Job</h1>
           <form className="job-form" onSubmit={handleSubmit}>
             <div className="form-group">
-              <label><i className="fas fa-tag"></i> Job Name</label>
-              <input name='jobName' value={formData.jobName} type="text" onChange={handleChange} />
+              <label>Job Name</label>
+              <input
+                name="jobName"
+                value={formData.jobName}
+                type="text"
+                onChange={handleChange}
+              />
             </div>
             <div className="form-group">
-              <label><i className="fas fa-database"></i> SQL Queries</label>
+              <label>SQL Queries</label>
               {formData.sqlQuery.map((query, index) => (
                 <div key={index} className="array-input">
-                  <textarea value={query} name='sqlQuery' rows="2" onChange={(e) => handleArrayChange(e, index, 'sqlQuery')}></textarea>
-                  <button type="button" className="icon-button add" onClick={() => addArrayField('sqlQuery')}>
+                  <textarea
+                    value={query}
+                    name="sqlQuery"
+                    rows="2"
+                    onChange={(e) => handleArrayChange(e, index, "sqlQuery")}
+                  ></textarea>
+                  <button
+                    type="button"
+                    className="icon-button add"
+                    onClick={() => addArrayField("sqlQuery")}
+                  >
                     <i className="fas fa-plus"></i>
                   </button>
-                  <button type="button" className="icon-button remove" onClick={() => deleteArrayField('sqlQuery', index)}>
+                  <button
+                    type="button"
+                    className="icon-button remove"
+                    onClick={() => deleteArrayField("sqlQuery", index)}
+                  >
                     <i className="fas fa-minus"></i>
                   </button>
                 </div>
               ))}
             </div>
             <div className="form-group">
-              <label><i className="fas fa-server"></i> Database Settings</label>
-              <select 
-                name="databaseSettingsId" 
-                value={formData.databaseSettingsId} 
+              <label>Database Settings</label>
+              <select
+                name="databaseSettingsId"
+                value={formData.databaseSettingsId}
                 onChange={handleChange}
               >
                 <option value="">Select a database setting</option>
-                {databaseSettings.map(setting => (
+                {databaseSettings.map((setting) => (
                   <option key={setting.id} value={setting.id}>
                     {setting.databaseSettingName}
                   </option>
@@ -171,7 +197,7 @@ const CreateJob = () => {
               </select>
             </div>
             <div className="form-group">
-              <label><i className="fas fa-envelope"></i> Key User Emails</label>
+              <label>Key User Emails</label>
               <textarea
                 name="keyUserEmail"
                 value={formData.keyUserEmail}
@@ -181,7 +207,7 @@ const CreateJob = () => {
               />
             </div>
             <div className="form-group">
-              <label><i className="fas fa-envelope"></i> CC Emails</label>
+              <label>CC Emails</label>
               <textarea
                 name="cc"
                 value={formData.cc}
@@ -191,54 +217,99 @@ const CreateJob = () => {
               />
             </div>
             <div className="form-group">
-              <label><i className="fas fa-heading"></i> Email Subject</label>
-              <input value={formData.emailSubject} name='emailSubject' type="text" onChange={handleChange}/>
+              <label>Email Subject</label>
+              <input
+                value={formData.emailSubject}
+                name="emailSubject"
+                type="text"
+                onChange={handleChange}
+              />
             </div>
             <div className="form-group">
-              <label><i className="fas fa-envelope-open-text"></i> Email Body</label>
-              <textarea value={formData.emailBody} name='emailBody' rows="4" onChange={handleChange}></textarea>
+              <label>Email Body</label>
+              <textarea
+                value={formData.emailBody}
+                name="emailBody"
+                rows="4"
+                onChange={handleChange}
+              ></textarea>
             </div>
             <div className="form-group">
-              <label><i className="fas fa-clock"></i> Cron Frequency</label>
-              <input value={formData.cronFrequency} name='cronFrequency' type="text" onChange={handleChange}/>
-              <p className="cron-description">{Cron(formData.cronFrequency).isValid() ? cronstrue.toString(formData.cronFrequency) : "Enter Valid Expression"}</p>
+              <label>Cron Frequency</label>
+              <input
+                value={formData.cronFrequency}
+                name="cronFrequency"
+                type="text"
+                onChange={handleChange}
+              />
+              <p className="cron-description">
+                {Cron(formData.cronFrequency).isValid()
+                  ? cronstrue.toString(formData.cronFrequency)
+                  : "Enter Valid Expression"}
+              </p>
             </div>
             <div className="form-group">
-              <label><i className="fas fa-play"></i> Start Date</label>
-              <input value={formData.startDateTime} onChange={handleChange} type="datetime-local" id="startTime" name="startDateTime" required />
+              <label>Start Date</label>
+              <input
+                value={formData.startDateTime}
+                onChange={handleChange}
+                type="datetime-local"
+                id="startTime"
+                name="startDateTime"
+                required
+              />
             </div>
             <div className="form-group">
-              <label><i className="fas fa-stop"></i> End Date</label>
-              <input value={formData.endDateTime} onChange={handleChange} type="datetime-local" id="endTime" name="endDateTime" required />
+              <label>End Date</label>
+              <input
+                value={formData.endDateTime}
+                onChange={handleChange}
+                type="datetime-local"
+                id="endTime"
+                name="endDateTime"
+                required
+              />
             </div>
             <div className="form-actions">
               <button type="submit" className="btn btn-primary">
-                <i className="fas fa-save"></i> Save Job
+                Save Job
               </button>
-              <button type="button" className="btn btn-danger" onClick={() => navigate("/reportscheduler/jobs")}>
-                <i className="fas fa-trash"></i> Cancel
+              <button
+                type="button"
+                className="btn btn-danger"
+                onClick={() => navigate("/reportscheduler/jobs")}
+              >
+                Cancel
               </button>
             </div>
           </form>
         </div>
       </div>
 
-      {showModal && (
-        <EnterCorrectDetailsModal onClose={closeModal} />
-      )}
+      {showModal && <EnterCorrectDetailsModal onClose={closeModal} />}
 
-      <Link to="/reportscheduler/jobs" ref={linkRef} style={{display:'none'}} />
+      <Link
+        to="/reportscheduler/jobs"
+        ref={linkRef}
+        style={{ display: "none" }}
+      />
     </>
   );
 };
 
-const EnterCorrectDetailsModal = ({onClose}) => (
-  <div className='modal-overlay'>
-    <div className='modal'>
-      <h3><i className="fas fa-exclamation-triangle"></i> Enter Correct Details</h3>
-      <p>Please review your input and ensure all fields are filled correctly.</p>
-      <div className='modal-actions'>
-        <button className='btn btn-secondary' onClick={onClose}>Close</button>
+const EnterCorrectDetailsModal = ({ onClose }) => (
+  <div className="modal-overlay">
+    <div className="modal">
+      <h3>
+        <i className="fas fa-exclamation-triangle"></i> Enter Correct Details
+      </h3>
+      <p>
+        Please review your input and ensure all fields are filled correctly.
+      </p>
+      <div className="modal-actions">
+        <button className="btn btn-secondary" onClick={onClose}>
+          Close
+        </button>
       </div>
     </div>
   </div>
