@@ -25,6 +25,9 @@ const Register = ({ onRegister }) => {
     }
     if (password.length < 1) {
       newErrors.password = "Password must be at least 1 characters long";
+    } 
+    if(roles.length < 1) {
+      newErrors.roles = "Atleast 1 role should be selected"
     }
     setErrors(newErrors);
     return Object.keys(newErrors).length === 0;
@@ -37,7 +40,7 @@ const Register = ({ onRegister }) => {
       try {
         // const response = await axios.post('http://localhost:8080/api/auth/register', { username, password });
         // localStorage.setItem('token', response.data.token);
-        await onRegister({ username, password });
+        await onRegister({ username, password , roles});
         navigate("/dashboard");
       } catch (error) {
         setAuthError("Registration failed. Please try again.");
@@ -75,6 +78,9 @@ const Register = ({ onRegister }) => {
       </div>
       <div>
         <RoleSelector handleRoleSelect={handleRoleSelect} />
+         {errors.roles && (
+          <div className="error-message">{errors.roles}</div>
+        )}
       </div>
 
       <button type="submit" className="register-button">

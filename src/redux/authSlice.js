@@ -4,6 +4,7 @@ const initialState = {
   isAuthenticated: false,
   token: null,
   user: null,
+  roles: []
 };
 
 const authSlice = createSlice({
@@ -14,7 +15,7 @@ const authSlice = createSlice({
       state.isAuthenticated = true;
       state.token = action.payload.token;
       // You might want to decode the JWT here to get user info
-      
+      state.roles = action.payload.roles  
       state.user = action.payload.user;
 
     },
@@ -29,6 +30,7 @@ const authSlice = createSlice({
       state.token = action.payload.token;
       // You might want to decode the JWT here to get user info
       state.user = action.payload.user;
+      state.roles = action.payload.roles;
     },
   },
 });
