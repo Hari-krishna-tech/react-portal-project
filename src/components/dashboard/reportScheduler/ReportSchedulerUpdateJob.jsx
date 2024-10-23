@@ -188,13 +188,13 @@ const UpdateJob = ({ jobId }) => {
               ))}
             </div>
             <div className="form-group">
-              <label>Database Settings</label>
+              <label>Database Name</label>
               <select
                 name="databaseSettingsId"
                 value={formData.databaseSettingsId}
                 onChange={handleChange}
               >
-                <option value="">Select a database setting</option>
+                <option value="">Select a database name</option>
                 {databaseSettings.map((setting) => (
                   <option key={setting.id} value={setting.id}>
                     {setting.databaseSettingName}

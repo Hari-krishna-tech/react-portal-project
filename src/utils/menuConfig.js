@@ -1,52 +1,106 @@
-import { lazy } from 'react';
+import { lazy } from "react";
 
 export const menuItems = [
   {
-    name: 'Report Scheduler',
-    route: '/reportscheduler',
-    component: lazy(() => import('../components/dashboard/reportScheduler/ReportSchedulerLayout')),
+    name: "Report Scheduler",
+    route: "/reportscheduler",
+    role: "ROLE_REPORT_SCHEDULER",
+    component: lazy(() =>
+      import("../components/dashboard/reportScheduler/ReportSchedulerLayout")
+    ),
     subItems: [
-      { name: 'Jobs', route: '/reportscheduler/jobs' },
-      { name: 'Create Jobs', route: '/reportscheduler/create-jobs' },
-      { name: 'Update Job', route: '/reportscheduler/update-job/:id' },
+      {
+        name: "Jobs",
+        role: "ROLE_REPORT_SCHEDULER",
+        route: "/reportscheduler/jobs",
+      },
+      {
+        name: "Create Jobs",
+        role: "ROLE_REPORT_SCHEDULER",
+        route: "/reportscheduler/create-jobs",
+      },
+      {
+        name: "Update Job",
+        role: "ROLE_REPORT_SCHEDULER",
+        route: "/reportscheduler/update-job/:id",
+      },
     ],
   },
   {
-    name: 'Seasonal Information',
-    route: '/seasonalinfo',
-    component: lazy(() => import('../components/dashboard/seasonalInformation/SeasonalInformationLayout')),
+    name: "Seasonal Information",
+    route: "/seasonalinfo",
+    role: "ROLE_SEASONAL_INFO",
+    component: lazy(() =>
+      import(
+        "../components/dashboard/seasonalInformation/SeasonalInformationLayout"
+      )
+    ),
     subItems: [
-      { name: 'List Seasonal Information', route: '/seasonalinfo/list' },
-      { name: 'Seasonal Information Logs', route: '/seasonalinfo/logs' }
+      {
+        name: "List Seasonal Information",
+        role: "ROLE_SEASONAL_INFO",
+        route: "/seasonalinfo/list",
+      },
+      {
+        name: "Seasonal Information Logs",
+        role: "ROLE_SEASONAL_INFO",
+        route: "/seasonalinfo/logs",
+      },
     ],
   },
   {
-    name: 'User Recertification',
-    route: '/userrecertification',
-    component: lazy(() => import('../components/dashboard/userRecertification/UserRecertification')),
+    name: "User Recertification",
+    route: "/userrecertification",
+    role: "ROLE_USER_RECERTIFICATION",
+    component: lazy(() =>
+      import("../components/dashboard/userRecertification/UserRecertification")
+    ),
     subItems: [
-      { name: 'Create Job', route: '/userrecertification/create-job' },
-      { name: 'Show Jobs', route: '/userrecertification/show-jobs' },
+      {
+        name: "Create Job",
+        role: "ROLE_USER_RECERTIFICATION",
+        route: "/userrecertification/create-job",
+      },
+      {
+        name: "Show Jobs",
+        role: "ROLE_USER_RECERTIFICATION",
+        route: "/userrecertification/show-jobs",
+      },
     ],
   },
   {
-    name: 'Outage',
-    route: '/outage',
-    component: lazy(() => import('../components/dashboard/outage/Outage')),
+    name: "Outage",
+    route: "/outage",
+    role: "ROLE_OUTAGE",
+    component: lazy(() => import("../components/dashboard/outage/Outage")),
     subItems: [
-      { name: 'Create', route: '/outage/create' },
-      { name: 'List', route: '/outage/list' },
+      { name: "Create", role: "ROLE_OUTAGE", route: "/outage/create" },
+      { name: "List", role: "ROLE_OUTAGE", route: "/outage/list" },
     ],
-  }, 
+  },
   {
-    name: 'Settings',
-    route: '/settings',
-    component: lazy(() => import('../components/dashboard/settings/SettingLayout')),
+    name: "Settings",
+    route: "/settings",
+    role: "ANY_ROLE",
+    component: lazy(() =>
+      import("../components/dashboard/settings/SettingLayout")
+    ),
     subItems: [
-      { name: 'Database Settings', route: '/settings/database-settings' },
-      { name: 'Database Settings List', route: '/settings/database-settings/list' },
-      { name: 'Update Database Settings', route: '/settings/update-database-settings/:id' },
-      
+      {
+        name: "Database Settings",
+        role: "ROLE_DATABASE_SETTING",
+        route: "/settings/database-settings",
+      },
+      {
+        name: "Database Settings List",
+        role: "ROLE_DATABASE_SETTING",
+        route: "/settings/database-settings/list",
+      },
+      {
+        name: "Update Database Settings",
+        role: "ROLE_DATABASE_SETTING",
+        route: "/settings/update-database-settings/:id",
+      },
     ],
   },
 ];

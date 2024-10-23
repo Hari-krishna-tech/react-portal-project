@@ -1,29 +1,29 @@
-import { createSlice } from '@reduxjs/toolkit';
+import { createSlice } from "@reduxjs/toolkit";
 
 const initialState = {
   isAuthenticated: false,
   token: null,
   user: null,
-  roles: []
+  roles: [],
 };
 
 const authSlice = createSlice({
-  name: 'auth',
+  name: "auth",
   initialState,
   reducers: {
     login: (state, action) => {
       state.isAuthenticated = true;
       state.token = action.payload.token;
       // You might want to decode the JWT here to get user info
-      state.roles = action.payload.roles  
+      state.roles = action.payload.roles;
       state.user = action.payload.user;
-
     },
     logout: (state) => {
       //localStorage.removeItem("token");
       state.isAuthenticated = false;
       state.token = null;
       state.user = null;
+      state.roles = [];
     },
     register: (state, action) => {
       state.isAuthenticated = true;
