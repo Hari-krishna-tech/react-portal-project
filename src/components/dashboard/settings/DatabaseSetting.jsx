@@ -170,11 +170,7 @@ const DatabaseSetting = () => {
                 type="button"
                 className="password-toggle"
                 onClick={() => setShowPassword(!showPassword)}
-              >
-                <i
-                  className={`fas ${showPassword ? "fa-eye-slash" : "fa-eye"}`}
-                ></i>
-              </button>
+              ></button>
             </div>
           </div>
 

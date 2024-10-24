@@ -5,10 +5,10 @@ const RoleSelector = ({ handleRoleSelect }) => {
   const [selectedRoles, setSelectedRoles] = useState([]);
   const roles = [
     { id: 1, label: "Report Scheduler", name: "ROLE_REPORT_SCHEDULER" },
-    { id: 2, label: "Seasonal Information", name: "ROLE_SEASONAL_INFO" },
+    // { id: 2, label: "Seasonal Information", name: "ROLE_SEASONAL_INFO" },
     { id: 3, label: "Database Setting", name: "ROLE_DATABASE_SETTING" },
-    { id: 4, label: "User Recertification", name: "ROLE_USER_RECERTIFICATION" },
-    { id: 5, label: "Outage", name: "ROLE_OUTAGE" },
+    // { id: 4, label: "User Recertification", name: "ROLE_USER_RECERTIFICATION" },
+    // { id: 5, label: "Outage", name: "ROLE_OUTAGE" },
   ];
 
   const handleRoleToggle = (roleId) => {

@@ -125,8 +125,19 @@ const UpdateJob = ({ jobId }) => {
   const handleSubmit = (e) => {
     e.preventDefault();
     console.log(formData);
-    const result = jobSchema.safeParse(formData);
-
+    const submissionData = {
+      ...formData,
+      keyUserEmail: formData.keyUserEmail
+        .split(";")
+        .map((email) => email.trim())
+        .filter((email) => email),
+      cc: formData.cc
+        .split(";")
+        .map((email) => email.trim())
+        .filter((email) => email),
+    };
+    const result = jobSchema.safeParse(submissionData);
+    console.log(result);
     if (!result.success || !Cron(formData.cronFrequency).isValid()) {
       setShowModal(true);
       console.log(result.error?.message);

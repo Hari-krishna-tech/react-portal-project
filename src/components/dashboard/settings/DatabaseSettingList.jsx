@@ -65,7 +65,7 @@ const DatabaseSettingList = () => {
                 <th>Username</th>
                 <th>Password</th>
                 <th>Created At</th>
-                {/* <th>Actions</th> */}
+                <th>Actions</th>
               </tr>
             </thead>
             <tbody>
@@ -79,12 +79,19 @@ const DatabaseSettingList = () => {
                   <td>
                     {setting.createdAt == null ? "N/A" : setting.createdAt}
                   </td>
-                  {/* <td className="actions">
-                                        <Link to={`/settings/update-database-settings/${setting.id}`}>
-                                            <button className="edit-btn" aria-label="Edit database setting">
-                                                <i className="fas fa-edit"></i>
-                                            </button>
-                                        </Link>
+                  <td className="actions">
+                    <Link
+                      to={`/settings/update-database-settings/${setting.id}`}
+                    >
+                      <button
+                        className="edit-btn"
+                        aria-label="Edit database setting"
+                      >
+                        <i className="fas fa-edit"></i>
+                      </button>
+                    </Link>
+                  </td>
+                  {/*
                                         <button className="delete-btn" onClick={() => handleDeleteClick(setting.id)} aria-label="Delete database setting">
                                             <i className="fas fa-trash-alt"></i>
                                         </button>
